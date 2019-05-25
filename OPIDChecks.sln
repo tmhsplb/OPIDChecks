@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 15
+VisualStudioVersion = 15.0.28010.2046
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OPIDChecks", "OPIDChecks\OPIDChecks.csproj", "{BCC149D4-F380-4378-8ED3-FFCE4CACB14B}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OPIDEntities", "OPIDChecks\OPIDEntities\OPIDEntities.csproj", "{9EB82D03-E62B-4162-9A78-4DF9A9AEB5CE}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{BCC149D4-F380-4378-8ED3-FFCE4CACB14B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BCC149D4-F380-4378-8ED3-FFCE4CACB14B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BCC149D4-F380-4378-8ED3-FFCE4CACB14B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BCC149D4-F380-4378-8ED3-FFCE4CACB14B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9EB82D03-E62B-4162-9A78-4DF9A9AEB5CE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9EB82D03-E62B-4162-9A78-4DF9A9AEB5CE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9EB82D03-E62B-4162-9A78-4DF9A9AEB5CE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9EB82D03-E62B-4162-9A78-4DF9A9AEB5CE}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {B4A8DCAC-19BE-4F9C-B724-00A76A10C0E2}
+	EndGlobalSection
+EndGlobal
