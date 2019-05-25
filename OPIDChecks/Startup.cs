@@ -38,7 +38,7 @@ namespace OPIDChecks
                 string userPwd = Config.SuperadminPassword;
                 var chkUser = UserManager.Create(user, userPwd);
 
-                // Add default User to Role Admin
+                // Add default User to Role Admin. Password configured on Web.config.
                 if (chkUser.Succeeded)
                 {
                     UserManager.AddToRole(user.Id, "SuperAdmin");
