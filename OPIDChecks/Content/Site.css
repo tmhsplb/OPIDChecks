@@ -17,8 +17,43 @@
 }
 
 /* Set width on the form input elements since they're 100% wide by default */
-input,
+/* input, */
 select,
 textarea {
     max-width: 280px;
+}
+
+.extraPersonTemplate {
+    display: none;
+}
+
+label {
+    display: inline-block;
+    text-align: right;
+}
+
+input + label {
+    text-align: left
+}
+
+label.error {
+    color: red;
+}
+
+/* Height set to 30px. This overrides the default of 22px on ui.jqgrid.css */
+.ui-jqgrid tr.jqgrow td {
+    height: 30px;
+}
+
+/* https://stackoverflow.com/questions/8357058/how-to-make-a-href-link-look-like-a-button */
+.button {
+    display: block;
+    width: 215px;
+    height: 45px;
+    background: #CCCCCC;
+    padding: 10px;
+    text-align: center;
+    border-radius: 5px;
+    color: black;
+    font-weight: bold;
 }

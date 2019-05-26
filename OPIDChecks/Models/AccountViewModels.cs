@@ -49,8 +49,11 @@ namespace OPIDChecks.Models
     public class LoginViewModel
     {
         [Required]
-        [Display(Name = "Email")]
-        [EmailAddress]
+        [Display(Name = "UserName")]
+
+        public string UserName { get; set; }
+
+        // PLB 9/2/17
         public string Email { get; set; }
 
         [Required]

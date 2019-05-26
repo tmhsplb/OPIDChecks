@@ -17,5 +17,7 @@ namespace OPIDChecks.DataContexts
         }
 
         public DbSet<RCheck> RChecks { get; set; }
+
+        public DbSet<Invitation> Invitations { get; set; }
     }
 }

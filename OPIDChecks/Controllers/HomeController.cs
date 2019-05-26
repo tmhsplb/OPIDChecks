@@ -6,23 +6,21 @@ using System.Web.Mvc;
 
 namespace OPIDChecks.Controllers
 {
-    public class HomeController : Controller
+    public class HomeController : UsersController
     {
-        public ActionResult Index()
+        public ActionResult Home()
         {
-            return View();
-        }
-
-        public ActionResult About()
-        {
-            ViewBag.Message = "Your application description page.";
-
-            return View();
-        }
-
-        public ActionResult Contact()
-        {
-            ViewBag.Message = "Your contact page.";
+            if (User.Identity.IsAuthenticated)
+            {
+                if (IsInRole("SuperAdmin"))
+                {
+                    // This is the launch method on ~/App_Start/RouteConfig.cs
+                    // Present the SuperAdmin menu if the application is
+                    // launched with sa in the browser's RememberMe cookie
+                    // or if the user logs in as sa. 
+                    return RedirectToAction("Home", "Superadmin");
+                }
+            }
 
             return View();
         }
