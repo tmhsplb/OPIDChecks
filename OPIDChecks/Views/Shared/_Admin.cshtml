@@ -5,11 +5,13 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>@ViewBag.Title - Electronic Referrals</title>
     @Styles.Render("~/Content/css")
+    @Styles.Render("~/Content/DataTables/css")
     @Scripts.Render("~/bundles/modernizr")
 
     @Scripts.Render("~/bundles/jquery")
     @Scripts.Render("~/bundles/jqueryval")
     @Scripts.Render("~/bundles/bootstrap")
+    @Scripts.Render("~/bundles/datatables")
     @RenderSection("scripts", required: false)
 
     <style>
@@ -34,7 +36,8 @@
             <div class="navbar-collapse collapse">
                 <ul class="nav navbar-nav">
                     <li>@Html.ActionLink("Home", "Home", "Admin")</li>
-                    <li>@Html.ActionLink("Merge", "Mmerge", "Admin")</li>
+                    <li>@Html.ActionLink("Merge", "Merge", "Admin")</li>
+                    <li>@Html.ActionLink("Resolved", "Resolved", "Admin")</li>
                     <li>@Html.ActionLink("Research", "Research", "Admin")</li>
                 </ul>
                 @Html.Partial("_LoginPartial")

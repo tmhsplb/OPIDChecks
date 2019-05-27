@@ -13,5 +13,10 @@ namespace OPIDChecks.Controllers
         {
             return View();
         }
+
+        public ActionResult Research()
+        {
+            return View();
+        }
     }
 }
