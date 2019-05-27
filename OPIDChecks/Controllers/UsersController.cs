@@ -72,24 +72,17 @@ namespace OPIDChecks.Controllers
                 {
                     return RedirectToAction("Home", "Superadmin");
                 }
-                else if (IsInRole("Client Advocate"))
-                {
-                    return RedirectToAction("OurClients", "Agent");
-                }
-                else if (IsInRole("Interviewer"))
-                {
-                    return RedirectToAction("AllClients", "Interviewer");
-                }
+                 
                 else if (IsInRole("Admin"))
                 {
-                    return RedirectToAction("AllClients", "Admin");
+                    return RedirectToAction("Home", "Admin");
                 }
 
                 ViewBag.Warning = "User in unrecognized role.";
             }
             else
             {
-                ViewBag.Warning = "Not Logged IN";
+                ViewBag.Warning = "Not Logged In";
             }
 
             return View();

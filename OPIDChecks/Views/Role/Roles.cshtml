@@ -88,5 +88,25 @@
                   //   alert(response.responseText);
               }
           }
-      });
+        });
+
+     // http://www.trirand.com/blog/?page_id=393/help/how-to-use-add-form-dialog-popup-window-set-position
+    $.extend($.jgrid.edit, {
+        recreateForm: true,
+        closeAfterAdd: true,
+        dataheight: '100%',
+        reloadAfterSubmit: true,
+        width: 500,
+        top: 400,
+        left: 450,
+        addCaption: "Add role",
+        editCaption: "Edit role",
+        bSubmit: "Submit",
+        bCancel: "Cancel",
+        bClose: "Close",
+        saveData: "Data has been changed! Save changes?",
+        bYes: "Yes",
+        bNo: "No",
+        bExit: "Cancel"
+    });
 </script>

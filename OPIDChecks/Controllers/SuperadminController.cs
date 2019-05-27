@@ -8,7 +8,7 @@ using System.Web.Mvc;
 
 namespace OPIDChecks.Controllers
 {
-    public class SuperadminController : Controller
+    public class SuperadminController : UsersController
     {
         public ActionResult Home()
         {
@@ -40,6 +40,26 @@ namespace OPIDChecks.Controllers
         {
             return RedirectToAction("Index", "Role");
         }
+
+        public string ExtendInvitation(InvitationViewModel invite)
+        {
+            if (InUse(invite.UserName))
+            {
+                string status = string.Format("The user name {0} is already in use. Please use a different user name.", invite.UserName);
+                return status;
+            }
+
+            DataManager.ExtendInvitation(invite);
+
+            return "Success";
+        }
+
+        public string EditUser(InvitationViewModel invite)
+        {
+            string status = DataManager.EditUser(invite);
+            return status;
+        }
+
 
         public JsonResult GetUsers(int page, int rows)
         {

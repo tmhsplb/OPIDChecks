@@ -31,7 +31,7 @@ namespace OPIDChecks
                 role.Name = "SuperAdmin";
                 roleManager.Create(role);
 
-                // Here we create a Admin super user who will maintain the website				
+                // Here we create the Superadmin user (sa) who will maintain the website				
                 var user = new ApplicationUser();
                 user.UserName = "sa";
                 user.Email = Config.SuperadminEmail;
