@@ -1,12 +1,15 @@
 ﻿using Microsoft.AspNet.Identity.EntityFramework;
 using OPIDChecks.DataContexts;
 using OPIDChecks.Models;
+using OPIDChecks.Utils;
 using OPIDEntities;
 using System;
 using System.Collections.Generic;
 using System.Configuration;
 using System.Linq;
+using System.Net.Http;
 using System.Web;
+using System.Linq.Dynamic;
 
 namespace OPIDChecks.DAL
 {
@@ -65,7 +68,7 @@ namespace OPIDChecks.DAL
                 invitation.UserName = invite.UserName;
                 invitation.Email = invite.Email;
                 invitation.Role = invite.Role;
-                 
+
                 referralscontext.SaveChanges();
                 return "Success";
             }
@@ -92,8 +95,8 @@ namespace OPIDChecks.DAL
         {
             string line1 = "You have been invited to register for use of OPIDChecks, the OPID Check Management System of Main Street Ministries.";
             string line2 = "Please go to opidchecks.apphb.com and click on the Register link in the main menu.";
-            string line3 = string.Format("Fill out the registrtion form using <strong>{0}</strong> as your email address, <strong>{1}</strong> as your User Name and a password you can remember.", invitation.Email, invitation.UserName);
-            string line4 = string.Format("Upon completing your registration you will be logged in to Eref in the role of <strong>{0}</strong>.", invitation.Role);
+            string line3 = string.Format("Fill out the registration form using <strong>{0}</strong> as your email address, <strong>{1}</strong> as your User Name and a password you can remember.", invitation.Email, invitation.UserName);
+            string line4 = string.Format("Upon completing your registration you will be logged in to the OPID Check Management System in the role of <strong>{0}</strong>.", invitation.Role);
             return string.Format("<p>{0}<br/>{1}<br/>{2}<br/>{3}", line1, line2, line3, line4);
         }
 
@@ -158,6 +161,110 @@ namespace OPIDChecks.DAL
                 }
 
                 return invitations;
+            }
+        }
+
+        /*
+        public static List<CheckViewModel> GetChecks()
+        {
+            List<CheckViewModel> processedChecks = new List<CheckViewModel>();
+
+            using (OpidDB opidcontext = new OpidDB())
+            {
+                List<RCheck> pchecks = opidcontext.RChecks.Select(u => u).ToList();
+
+                foreach (var pcheck in pchecks)
+                {
+                    processedChecks.Add(new CheckViewModel
+                    {
+                        RecordID = pcheck.RecordID,
+                        InterviewRecordID = pcheck.InterviewRecordID,
+                        Num = pcheck.Num,
+                        Name = pcheck.Name,
+                        Date = pcheck.Date.ToShortDateString(),
+                        Service = pcheck.Service,
+                        Disposition = pcheck.Disposition
+                    });
+                }
+            }
+
+            return processedChecks;
+        }
+        */
+
+        public static List<RCheck> GetChecks(int sortColumn, string sortColumnDir, int skip, int pageSize)
+        {
+            // Try this for server side processing
+            //  https://stackoverflow.com/questions/3193930/using-jquery-datatable-for-server-side-processing-with-paging-filtering-and-sea
+
+            using (OpidDB opidcontext = new OpidDB())
+            {
+                var pchecks = (from check in opidcontext.RChecks select check);
+
+                
+                //SORT
+                if (sortColumn != -1 && !string.IsNullOrEmpty(sortColumnDir))
+                {
+                    pchecks = pchecks.OrderBy(sortColumn + " " + sortColumnDir);
+                }
+                
+                return pchecks.Skip(skip).Take(pageSize).ToList(); ;
+            }
+        }
+
+        public static bool ResearchTableIsEmpty()
+        {
+            using (OpidDB opidcontext = new OpidDB())
+            {
+                var checks = opidcontext.RChecks;
+
+                if (checks.Count() == 0) // Is the table empty for a restore operation?
+                {
+                    return true;
+                }
+            }
+
+            return false;
+        }
+
+        public static List<string> UploadFile(HttpPostedFileBase postedFile)
+        {
+            List<string> docfiles = new List<string>();
+            string filePath = System.Web.HttpContext.Current.Request.MapPath(string.Format("~/Uploads/{0}", postedFile.FileName));
+            postedFile.SaveAs(filePath);
+
+            docfiles.Add(filePath);
+
+            return docfiles;
+        }
+
+        public static void RestoreResearchTable(string rtFileName)
+        {
+            string pathToResearchTableFile = System.Web.HttpContext.Current.Request.MapPath(string.Format("~/Uploads/{0}", rtFileName));
+
+            List<RCheck> rchecks = MyExcelDataReader.GetRChecks(pathToResearchTableFile);
+            DateTime today = DateTime.Now;
+
+            
+            RestoreRChecksTable(rchecks);
+        }
+
+        private static void RestoreRChecksTable(List<RCheck> rChecks)
+        {
+            using (OpidDB opidcontext = new OpidDB())
+            {
+                var checks = opidcontext.RChecks;
+
+                if (checks.Count() == 0) // Is the table empty for rebuild?
+                {
+                    foreach (RCheck rc in rChecks)
+                    {
+                        checks.Add(rc);
+                    }
+
+                    opidcontext.SaveChanges();
+                    return;
+                }
             }
         }
     }

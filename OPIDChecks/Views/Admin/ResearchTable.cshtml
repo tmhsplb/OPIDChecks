@@ -1,0 +1,65 @@
+﻿
+@{
+    ViewBag.Title = "Research";
+    Layout = "~/Views/Shared/_Admin.cshtml";
+}
+
+<script type="text/javascript">
+/* See https://www.codeproject.com/Tips/1011531/Using-jQuery-DataTables-with-Server-Side-Processing */
+$(document).ready(function() {
+    $('#researchtable').dataTable({
+        "pagingType": "full_numbers",
+        "processing": true,
+        "serverSide": true,
+        "info": true,
+        "stateSave": true,
+        "lengthMenu": [[10, 20, 50, -1], [10, 20, 50, "All"]],
+        "ajax": {
+            "url": "@Url.Action("GetChecks", "ResearchTable")",
+            "type": "GET"
+        },
+        "columns": [
+            { "data": "RecordID", "orderable": false },
+            { "data": "InterviewRecordID", "orderable": false },
+            { "data": "Name", "orderable": true },
+            { "data": "Num", "orderable": false },
+            { "data": "Date", "orderable": true },
+            { "data": "Service", "orderable": true },
+            { "data": "Disposition", "orderable": false}
+        ],
+        "order": [[2, "asc"]]
+    });
+});
+</script>
+
+<br /><br />
+<h2>Research Table</h2>
+<br />
+
+<div style="margin:30px;">
+    <table id="researchtable" class="display" cellspacing="0" width="100%">
+        <thead>
+            <tr style="text-align:left;">
+                <th>RecordID</th>
+                <th>InterviewRecordID</th>
+                <th>Name</th>
+                <th>Num</th>
+                <th>Date</th>
+                <th>Service</th>
+                <th>Diposition</th>
+            </tr>
+        </thead>
+
+        <tfoot>
+            <tr style="text-align:left;">
+                <th>RecordID</th>
+                <th>InterviewRecordID</th>
+                <th>Name</th>
+                <th>Num</th>
+                <th>Date</th>
+                <th>Service</th>
+                <th>Diposition</th>
+            </tr>
+        </tfoot>
+    </table>
+</div>

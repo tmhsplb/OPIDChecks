@@ -5,11 +5,13 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>@ViewBag.Title - OPID Checks</title>
     @Styles.Render("~/Content/css")
+    @Styles.Render("~/Content/DataTables/css")
     @Scripts.Render("~/bundles/modernizr")
 
     @Scripts.Render("~/bundles/jquery")
     @Scripts.Render("~/bundles/jqueryval")
     @Scripts.Render("~/bundles/bootstrap")
+    @Scripts.Render("~/bundles/datatables")
     @RenderSection("scripts", required: false)
 
     <style>
@@ -36,6 +38,7 @@
                     <li>@Html.ActionLink("Home", "Home", "Superadmin")</li>
                     <li>@Html.ActionLink("Users", "ManageUsers", "Superadmin")</li>
                     <li>@Html.ActionLink("Roles", "ManageRoles", "Superadmin")</li>
+                    <li>@Html.ActionLink("Research", "ResearchTable", "ResearchTable")</li>
                 </ul>
                 @Html.Partial("_LoginPartial")
             </div>

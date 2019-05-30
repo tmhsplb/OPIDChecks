@@ -3,7 +3,7 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>@ViewBag.Title - Electronic Referrals</title>
+    <title>@ViewBag.Title - OPID Check Processing</title>
     @Styles.Render("~/Content/css")
     @Styles.Render("~/Content/DataTables/css")
     @Scripts.Render("~/bundles/modernizr")
@@ -38,7 +38,7 @@
                     <li>@Html.ActionLink("Home", "Home", "Admin")</li>
                     <li>@Html.ActionLink("Merge", "Merge", "Admin")</li>
                     <li>@Html.ActionLink("Resolved", "Resolved", "Admin")</li>
-                    <li>@Html.ActionLink("Research", "Research", "Admin")</li>
+                    <li>@Html.ActionLink("Research", "ResearchTable", "Admin")</li>
                 </ul>
                 @Html.Partial("_LoginPartial")
             </div>
