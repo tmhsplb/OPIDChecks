@@ -192,23 +192,29 @@ namespace OPIDChecks.DAL
         }
         */
 
-        public static List<RCheck> GetChecks(int sortColumn, string sortColumnDir, int skip, int pageSize)
+        public static List<CheckViewModel> GetChecks()
         {
-            // Try this for server side processing
-            //  https://stackoverflow.com/questions/3193930/using-jquery-datatable-for-server-side-processing-with-paging-filtering-and-sea
-
             using (OpidDB opidcontext = new OpidDB())
             {
-                var pchecks = (from check in opidcontext.RChecks select check);
+                var pchecks = (from check in opidcontext.RChecks select check).ToList();
 
-                
-                //SORT
-                if (sortColumn != -1 && !string.IsNullOrEmpty(sortColumnDir))
+                List<CheckViewModel> checks = new List<CheckViewModel>();
+
+                foreach (RCheck rc in pchecks)
                 {
-                    pchecks = pchecks.OrderBy(sortColumn + " " + sortColumnDir);
+                    checks.Add(new CheckViewModel
+                    {
+                        RecordID = rc.RecordID,
+                        InterviewRecordID = rc.InterviewRecordID,
+                        Num = rc.Num,
+                        Name = rc.Name,
+                        Date = rc.Date.ToShortDateString(),
+                        Service = rc.Service,
+                        Disposition = rc.Disposition
+                    });
                 }
-                
-                return pchecks.Skip(skip).Take(pageSize).ToList(); ;
+
+                return checks;
             }
         }
 
@@ -253,13 +259,24 @@ namespace OPIDChecks.DAL
         {
             using (OpidDB opidcontext = new OpidDB())
             {
-                var checks = opidcontext.RChecks;
+                //var checks = opidcontext.RChecks;
+                List<CheckViewModel> checks = new List<CheckViewModel>();
 
                 if (checks.Count() == 0) // Is the table empty for rebuild?
                 {
                     foreach (RCheck rc in rChecks)
                     {
-                        checks.Add(rc);
+                        
+                        checks.Add(new CheckViewModel
+                        {
+                            RecordID = rc.RecordID,
+                            InterviewRecordID = rc.InterviewRecordID,
+                            Num = rc.Num,
+                            Name = rc.Name,
+                            Date = rc.Date.ToShortDateString(),
+                            Service = rc.Service,
+                            Disposition = rc.Disposition
+                        });
                     }
 
                     opidcontext.SaveChanges();

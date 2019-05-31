@@ -6,20 +6,10 @@
 }
 
 <script type="text/javascript">
-/* See https://www.codeproject.com/Tips/1011531/Using-jQuery-DataTables-with-Server-Side-Processing */
 $(document).ready(function() {
-    $('#researchtable').dataTable({
-        "pagingType": "full_numbers",
-        "processing": true,
-        "serverSide": true,
-        "filter": false,
-        "orderMulti": false,
-        "info": true,
-        "stateSave": true,
-        "lengthMenu": [[10, 20, 50, -1], [10, 20, 50, "All"]],
+    $('#researchtable').DataTable({
         "ajax": {
-            "url": "@Url.Action("GetChecks", "ResearchTable")",
-            "type": "GET"
+            "url": "@Url.Action("GetChecks", "ResearchTable")" 
         },
         "columns": [
             { "data": "RecordID", "orderable": false },
@@ -29,8 +19,7 @@ $(document).ready(function() {
             { "data": "Date", "orderable": true },
             { "data": "Service", "orderable": true },
             { "data": "Disposition", "orderable": false}
-        ],
-        "order": [[2, "asc"]]
+        ]
     });
 });
 </script>
@@ -69,8 +58,8 @@ $(document).ready(function() {
 
 <br /><br /><br />
 
- 
-@using (Html.BeginForm("Restore", "ResearchTable", FormMethod.Post, new { enctype="multipart/form-data", @class = "form-horizontal", role = "form" }))
+
+@using (Html.BeginForm("Restore", "ResearchTable", FormMethod.Post, new { enctype = "multipart/form-data", @class = "form-horizontal", role = "form" }))
 {
     // Idea for
     //   TextxboxFor(m => m.File, new { type = "file"})

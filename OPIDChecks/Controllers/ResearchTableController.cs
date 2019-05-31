@@ -15,39 +15,19 @@ namespace OPIDChecks.Controllers
     public class ResearchTableController : Controller
     { 
        
-        public JsonResult GetChecks(int draw, int start, int length)
+        
+        public JsonResult GetChecks()  
         {
-            int sortColumn = -1;
-            string sortColumnDir = "asc";
-
-            //Find Order Column
-           // var sortColumn = Request.Form.GetValues("columns[" + Request.Form.GetValues("order[0][column]").FirstOrDefault() + "][name]").FirstOrDefault();
-           // var sortColumnDir = Request.Form.GetValues("order[0][dir]").FirstOrDefault();
-
-            if (Request.QueryString["order[0][column]"] != null)
-            {
-                sortColumn = int.Parse(Request.QueryString["order[0][column]"]);
-            }
-            if (Request.QueryString["order[0][dir]"] != null)
-            {
-                sortColumnDir = Request.QueryString["order[0][dir]"];
-            }
-
-            int pageSize = length;
-            int skip = start;
-             
-            List<RCheck> checks = DataManager.GetChecks(sortColumn, sortColumnDir, skip, pageSize);
+            List<CheckViewModel> checks = DataManager.GetChecks();
 
             // See https://www.codeproject.com/Tips/1011531/Using-jQuery-DataTables-with-Server-Side-Processing
             var jsonData = new
             {
-                draw = draw,
+                draw = 1,
                 recordsTotal = checks.Count,
                 recordsFiltered = checks.Count,
                 data = checks
             };
-
-           
 
             return Json(jsonData, JsonRequestBehavior.AllowGet);
         }
