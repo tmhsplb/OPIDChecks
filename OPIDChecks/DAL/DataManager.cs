@@ -248,32 +248,29 @@ namespace OPIDChecks.DAL
         {
             string pathToResearchTableFile = System.Web.HttpContext.Current.Request.MapPath(string.Format("~/Uploads/{0}", rtFileName));
 
-            List<RCheck> rchecks = MyExcelDataReader.GetRChecks(pathToResearchTableFile);
-            DateTime today = DateTime.Now;
-
-            
+            List<CheckViewModel> rchecks = MyExcelDataReader.GetCVMS(pathToResearchTableFile);
+          
             RestoreRChecksTable(rchecks);
         }
 
-        private static void RestoreRChecksTable(List<RCheck> rChecks)
+        private static void RestoreRChecksTable(List<CheckViewModel> rChecks)
         {
             using (OpidDB opidcontext = new OpidDB())
             {
-                //var checks = opidcontext.RChecks;
-                List<CheckViewModel> checks = new List<CheckViewModel>();
-
+                var checks = opidcontext.RChecks;
+               
                 if (checks.Count() == 0) // Is the table empty for rebuild?
                 {
-                    foreach (RCheck rc in rChecks)
+                    foreach (CheckViewModel rc in rChecks)
                     {
                         
-                        checks.Add(new CheckViewModel
+                        checks.Add(new RCheck
                         {
                             RecordID = rc.RecordID,
                             InterviewRecordID = rc.InterviewRecordID,
                             Num = rc.Num,
                             Name = rc.Name,
-                            Date = rc.Date.ToShortDateString(),
+                            Date = Convert.ToDateTime(rc.Date),  
                             Service = rc.Service,
                             Disposition = rc.Disposition
                         });

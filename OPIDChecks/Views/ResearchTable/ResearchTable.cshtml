@@ -9,7 +9,7 @@
 $(document).ready(function() {
     $('#researchtable').DataTable({
         "ajax": {
-            "url": "@Url.Action("GetChecks", "ResearchTable")" 
+            "url": "@Url.Action("GetChecks", "ResearchTable")"
         },
         "columns": [
             { "data": "RecordID", "orderable": false },
@@ -58,6 +58,22 @@ $(document).ready(function() {
 
 <br /><br /><br />
 
+@using (Html.BeginForm("Backup", "ResearchTable", FormMethod.Post, new { enctype = "multipart/form-data", @class = "form-horizontal", role = "form" }))
+{
+    
+    @Html.AntiForgeryToken()
+    <h4>Backup Research Table.</h4>
+    <hr />
+    @Html.ValidationSummary("", new { @class = "text-danger" })
+     
+    <div class="form-group">
+        <div class="col-md-offset-2 col-md-10">
+            <input type="submit" class="btn btn-default" value="Download Backup File" />
+        </div>
+    </div>
+}
+
+<br/><br/>
 
 @using (Html.BeginForm("Restore", "ResearchTable", FormMethod.Post, new { enctype = "multipart/form-data", @class = "form-horizontal", role = "form" }))
 {

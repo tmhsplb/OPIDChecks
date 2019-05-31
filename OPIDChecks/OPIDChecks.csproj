@@ -214,6 +214,7 @@
     <Compile Include="Controllers\SuperadminController.cs" />
     <Compile Include="Controllers\UsersController.cs" />
     <Compile Include="DAL\DataManager.cs" />
+    <Compile Include="DAL\FileDownloader.cs" />
     <Compile Include="DataContexts\IdentityDB.cs" />
     <Compile Include="DataContexts\IdentityMigrations\Configuration.cs" />
     <Compile Include="DataContexts\OpidDB.cs" />
@@ -468,6 +469,7 @@
     <Content Include="Content\themes\base\minified\jquery.ui.tabs.min.css" />
     <Content Include="Content\themes\base\minified\jquery.ui.theme.min.css" />
     <Content Include="Content\themes\base\minified\jquery.ui.tooltip.min.css" />
+    <Content Include="Downloads\DummyDownloadFile.txt" />
     <Content Include="favicon.ico" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />
@@ -658,6 +660,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
+    <Folder Include="Views\FileDownload\" />
     <Folder Include="Views\Home\" />
   </ItemGroup>
   <ItemGroup>

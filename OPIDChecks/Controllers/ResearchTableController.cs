@@ -37,6 +37,12 @@ namespace OPIDChecks.Controllers
             return View();
         }
 
+        public ActionResult Backup()
+        {
+            FileDownloader.DownloadResearchTable();
+            return View("ResearchTable");
+        }
+
         [HttpPost]
         public ActionResult Restore(FileViewModel model)
         {
