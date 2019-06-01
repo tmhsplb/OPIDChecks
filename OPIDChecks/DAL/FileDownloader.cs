@@ -73,7 +73,8 @@ namespace OPIDChecks.DAL
         {
             var csv = new StringBuilder();
           
-            string header = "Date, Record ID, Interview Record ID, Name, Check Number, Service, Disposition";
+            // N.B. No spaces between column names in the header row!
+            string header = "Date,Record ID,Interview Record ID,Name,Check Number,Service,Disposition";
             csv.AppendLine(header);
 
             foreach (CheckViewModel check in checks)
