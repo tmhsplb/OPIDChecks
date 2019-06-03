@@ -31,10 +31,9 @@ namespace OPIDChecks.DAL
 
             return timestamp;
         } 
-        public static void DownloadResearchTable()
+        public static string DownloadResearchTable()
         {
             List<CheckViewModel> checks = DataManager.GetChecks();
-           
            
             if (checks != null)
             {
@@ -44,7 +43,10 @@ namespace OPIDChecks.DAL
 
                 PrepareResearchTableDownload(pathToResearchTableFile, checks);
                 DownloadResearchTable(researchTableFileName, pathToResearchTableFile);
+                return researchTableFileName;
             }
+
+            return "NoChecks";
         }
 
         private static HttpResponseMessage DownloadResearchTable(string fname, string filePath)

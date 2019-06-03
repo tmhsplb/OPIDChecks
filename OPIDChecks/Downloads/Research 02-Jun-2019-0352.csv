@@ -1,4 +1,4 @@
-"Date", "Record ID", "Interview Record ID", "Name", "Check Number", "Service", "Disposition"
+Date,Record ID,Interview Record ID,Name,Check Number,Service,Disposition
 10/23/2018,298368,298386,"Abbott, Michael",87403,TID,Cleared
 10/23/2018,298368,298386,"Abbott, Michael",87402,LBVD,Cleared
 11/17/2016,271999,272078,"Abdul Hameen, Patricia",75107,LBVD,Cleared

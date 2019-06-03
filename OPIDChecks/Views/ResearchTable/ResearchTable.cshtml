@@ -6,22 +6,44 @@
 }
 
 <script type="text/javascript">
-$(document).ready(function() {
-    $('#researchtable').DataTable({
-        "ajax": {
-            "url": "@Url.Action("GetChecks", "ResearchTable")"
-        },
-        "columns": [
-            { "data": "RecordID", "orderable": false },
-            { "data": "InterviewRecordID", "orderable": false },
-            { "data": "Name", "orderable": true },
-            { "data": "Num", "orderable": false },
-            { "data": "Date", "orderable": true },
-            { "data": "Service", "orderable": true },
-            { "data": "Disposition", "orderable": false}
-        ]
+    $(document).ready(function () {
+        $('#researchtable').DataTable({
+            "ajax": {
+                "url": "@Url.Action("GetChecks", "ResearchTable")"
+            },
+            "columns": [
+                { "data": "RecordID", "orderable": false },
+                { "data": "InterviewRecordID", "orderable": false },
+                { "data": "Name", "orderable": true },
+                { "data": "Num", "orderable": false },
+                { "data": "Date", "orderable": true },
+                { "data": "Service", "orderable": true },
+                { "data": "Disposition", "orderable": false }
+            ]
+        });
+
+        
+        /* https://stackoverflow.com/questions/11534690/how-to-do-a-jquery-callback-after-form-submit */
+        /* https://www.airpair.com/js/jquery-ajax-post-tutorial */
+        
+         $("#backupForm").submit(function() {
+             $.ajax({
+                 url: "/OpidChecks/ResearchTable/Backup",
+                 dataType: 'json',
+                 type: "POST",
+                 contentType: 'application/x-www-form-urlencoded',
+                 data: $(this).serialize(),
+                 success: function (data, textStatus, jQxhr) {
+                     alert("Inside backupForm callback: data.file = " + data.rtfile + " textStatus = " + textStatus);
+                 },
+                 error: function( jqXhr, textStatus, errorThrown ) {
+                    alert("error thrown: " + errorThrown );
+                }
+             })
+         })
     });
-});
+        
+
 </script>
 
 <br /><br />
@@ -58,22 +80,18 @@ $(document).ready(function() {
 
 <br /><br /><br />
 
-@using (Html.BeginForm("Backup", "ResearchTable", FormMethod.Post, new { enctype = "multipart/form-data", @class = "form-horizontal", role = "form" }))
-{
-    
-    @Html.AntiForgeryToken()
-    <h4>Backup Research Table.</h4>
+
+<form id="backupForm">
+    <h4>Backup Research Table</h4>
     <hr />
-    @Html.ValidationSummary("", new { @class = "text-danger" })
-     
     <div class="form-group">
         <div class="col-md-offset-2 col-md-10">
-            <input type="submit" class="btn btn-default" value="Download Backup File" />
+            <button class="btn btn-default" type="submit">Download Research Table Backup File</button>
         </div>
     </div>
-}
+</form>
 
-<br/><br/>
+<br /><br /><br /><br />
 
 @using (Html.BeginForm("Restore", "ResearchTable", FormMethod.Post, new { enctype = "multipart/form-data", @class = "form-horizontal", role = "form" }))
 {
