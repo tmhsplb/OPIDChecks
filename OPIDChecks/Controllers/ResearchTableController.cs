@@ -9,54 +9,28 @@ using System.Net.Http;
 using System.Net;
 using System.Web.Helpers;
 using OPIDEntities;
+using System.IO;
+using System.Net.Http.Headers;
+using System.Text;
 
 namespace OPIDChecks.Controllers
 {
     public class ResearchTableController : Controller
     { 
        
-        
-        public JsonResult GetChecks()  
-        {
-            List<CheckViewModel> checks = DataManager.GetChecks();
-
-            // See https://www.codeproject.com/Tips/1011531/Using-jQuery-DataTables-with-Server-Side-Processing
-            var jsonData = new
-            {
-                draw = 1,
-                recordsTotal = checks.Count,
-                recordsFiltered = checks.Count,
-                data = checks
-            };
-
-            return Json(jsonData, JsonRequestBehavior.AllowGet);
-        }
-
-        public ActionResult ResearchTable()
-        {
-            return View();
-        }
-
-        /*
-        public ActionResult Backup()
-        {
-            FileDownloader.DownloadResearchTable();
-            return View("ResearchTable");
-        }
-        */
-
         [HttpPost]
-        public JsonResult Backup()
+        public JsonResult GetResearchTable()
         {
-            string researchTableFileName = FileDownloader.DownloadResearchTable();
+            
+            string researchTableFileName = DataManager.GetResearchTableName();
+            string content = DataManager.GetResearchTableCSV();
+
             return Json(new
             {
-                statusCode = 200,
-                status = "File uploaded",
-                rtfile = researchTableFileName,
+                rtFileName = researchTableFileName,
+                content = content
             }, "text/html");
         }
-    
 
         [HttpPost]
         public ActionResult Restore(FileViewModel model)

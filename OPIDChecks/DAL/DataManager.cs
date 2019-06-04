@@ -10,6 +10,7 @@ using System.Linq;
 using System.Net.Http;
 using System.Web;
 using System.Linq.Dynamic;
+using System.Text;
 
 namespace OPIDChecks.DAL
 {
@@ -164,34 +165,6 @@ namespace OPIDChecks.DAL
             }
         }
 
-        /*
-        public static List<CheckViewModel> GetChecks()
-        {
-            List<CheckViewModel> processedChecks = new List<CheckViewModel>();
-
-            using (OpidDB opidcontext = new OpidDB())
-            {
-                List<RCheck> pchecks = opidcontext.RChecks.Select(u => u).ToList();
-
-                foreach (var pcheck in pchecks)
-                {
-                    processedChecks.Add(new CheckViewModel
-                    {
-                        RecordID = pcheck.RecordID,
-                        InterviewRecordID = pcheck.InterviewRecordID,
-                        Num = pcheck.Num,
-                        Name = pcheck.Name,
-                        Date = pcheck.Date.ToShortDateString(),
-                        Service = pcheck.Service,
-                        Disposition = pcheck.Disposition
-                    });
-                }
-            }
-
-            return processedChecks;
-        }
-        */
-
         public static List<CheckViewModel> GetChecks()
         {
             using (OpidDB opidcontext = new OpidDB())
@@ -242,6 +215,58 @@ namespace OPIDChecks.DAL
             docfiles.Add(filePath);
 
             return docfiles;
+        }
+
+        public static string GetTimestamp()
+        {
+            // Set timestamp when resolvedController is loaded. This allows
+            // the timestamp to be made part of the page title, which allows
+            // the timestamp to appear in the printed file and also as part
+            // of the Excel file name of both the angular datatable and
+            // the importme file.
+
+            // This compensates for the fact that DateTime.Now on the AppHarbor server returns
+            // the time in the timezone of the server.
+            // Here we convert UTC to Central Standard Time to get the time in Houston.
+            // It also properly handles daylight savings time.
+            DateTime now = DateTime.Now.ToUniversalTime();
+            DateTime cst = TimeZoneInfo.ConvertTimeBySystemTimeZoneId(now, "UTC", "Central Standard Time");
+            string timestamp = cst.ToString("dd-MMM-yyyy-hhmm");
+
+            return timestamp;
+        }
+
+        public static string GetResearchTableName()
+        {
+            string timestamp = GetTimestamp();
+            string fname = string.Format("Research {0}", timestamp);
+            return fname;
+        }  
+
+        public static string GetResearchTableCSV()
+        {
+            List<CheckViewModel> checks = DataManager.GetChecks();
+            var csv = new StringBuilder();
+
+            // N.B. No spaces between column names in the header row!
+            string header = "Date,Record ID,Interview Record ID,Name,Check Number,Service,Disposition";
+            csv.AppendLine(header);
+
+            foreach (CheckViewModel check in checks)
+            {
+                string csvrow = string.Format("{0},{1},{2},{3},{4},{5},{6}",
+                    check.Date,
+                    check.RecordID,
+                    check.InterviewRecordID,
+                    string.Format("\"{0}\"", check.Name),
+                    check.Num,
+                    check.Service,
+                    check.Disposition);
+
+                csv.AppendLine(csvrow);
+            }
+
+            return csv.ToString();
         }
 
         public static void RestoreResearchTable(string rtFileName)
