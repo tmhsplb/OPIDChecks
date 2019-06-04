@@ -38,19 +38,21 @@ namespace OPIDChecks.DAL
             if (checks != null)
             {
                 string timestamp = GetTimestamp();
-                string researchTableFileName = string.Format("Research {0}", timestamp);
-                string pathToResearchTableFile = System.Web.HttpContext.Current.Request.MapPath(string.Format("~/Downloads/{0}.csv", researchTableFileName));
+                string fname = string.Format("Research {0}", timestamp);
+                string pathToResearchTableFile = System.Web.HttpContext.Current.Request.MapPath(string.Format("~/Downloads/{0}.csv", fname));
 
                 PrepareResearchTableDownload(pathToResearchTableFile, checks);
-                DownloadResearchTable(researchTableFileName, pathToResearchTableFile);
-                return researchTableFileName;
+                return fname;
             }
 
             return "NoChecks";
         }
 
-        private static HttpResponseMessage DownloadResearchTable(string fname, string filePath)
+        public static string GetContentAsString(string fname)
         {
+
+            string filePath = System.Web.HttpContext.Current.Request.MapPath(string.Format("~/Downloads/{0}.csv", fname));
+
             Byte[] bytes = null;
             FileStream fs = new FileStream(filePath, FileMode.Open, FileAccess.Read);
             BinaryReader br = new BinaryReader(fs);
@@ -58,18 +60,12 @@ namespace OPIDChecks.DAL
             br.Close();
             fs.Close();
 
-            HttpResponseMessage result = new HttpResponseMessage(HttpStatusCode.OK);
             System.IO.MemoryStream stream = new MemoryStream(bytes);
-            result.Content = new StreamContent(stream);
-            // result.Content.Headers.ContentType = new MediaTypeHeaderValue(fileType);
-            //  result.Content.Headers.ContentType = new MediaTypeHeaderValue("text/plain");
-            result.Content.Headers.ContentType = new MediaTypeHeaderValue("application/force-download");
-            result.Content.Headers.ContentDisposition = new ContentDispositionHeaderValue("attachment")
-            {
-                FileName = fname
-            };
-            return (result);
+            string content = Encoding.ASCII.GetString(stream.ToArray());
+            return content;
         }
+
+        
 
         public static void PrepareResearchTableDownload(string pathToResearchTableFile, List<CheckViewModel> checks)
         {
