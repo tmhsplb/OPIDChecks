@@ -16,8 +16,28 @@ using System.Text;
 namespace OPIDChecks.Controllers
 {
     public class ResearchTableController : Controller
-    { 
-       
+    {
+        public JsonResult GetChecks()
+        {
+            List<CheckViewModel> checks = DataManager.GetChecks();
+
+            // See https://www.codeproject.com/Tips/1011531/Using-jQuery-DataTables-with-Server-Side-Processing
+            var jsonData = new
+            {
+                draw = 1,
+                recordsTotal = checks.Count,
+                recordsFiltered = checks.Count,
+                data = checks
+            };
+
+            return Json(jsonData, JsonRequestBehavior.AllowGet);
+        }
+
+        public ActionResult ResearchTable()
+        {
+            return View();
+        }
+
         [HttpPost]
         public JsonResult GetResearchTable()
         {
