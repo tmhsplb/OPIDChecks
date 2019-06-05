@@ -11,7 +11,7 @@ namespace OPIDChecks.Utils
     {
         public static List<CheckViewModel> GetCVMS(string filePath)
         {
-            List<CheckViewModel> rhecks = new ExcelData(filePath).GetData().Select(dataRow => new CheckViewModel
+            List<CheckViewModel> rchecks = new ExcelData(filePath).GetData().Select(dataRow => new CheckViewModel
             {
                 Date = dataRow["Date"].ToString(),
                 RecordID = Convert.ToInt32(dataRow["Record ID"].ToString()),
@@ -22,7 +22,7 @@ namespace OPIDChecks.Utils
                 Disposition = dataRow["Disposition"].ToString()
             }).ToList();
 
-            return rhecks;
+            return rchecks;
         }
 
     }
