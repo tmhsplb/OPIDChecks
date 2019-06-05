@@ -48,7 +48,7 @@ namespace OPIDChecks
             manager.UserValidator = new UserValidator<ApplicationUser>(manager)
             {
                 AllowOnlyAlphanumericUserNames = false,
-                RequireUniqueEmail = false
+                RequireUniqueEmail = false  // Allow duplicate emails
             };
 
             // Configure validation logic for passwords

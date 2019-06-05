@@ -1,35 +1,27 @@
 ﻿
 @{
-    ViewBag.Title = "Research";
+    ViewBag.Title = "Research Table";
     Layout = "~/Views/Shared/_Admin.cshtml";
 }
 
 <script type="text/javascript">
-/* See https://www.codeproject.com/Tips/1011531/Using-jQuery-DataTables-with-Server-Side-Processing */
-$(document).ready(function() {
-    $('#researchtable').dataTable({
-        "pagingType": "full_numbers",
-        "processing": true,
-        "serverSide": true,
-        "info": true,
-        "stateSave": true,
-        "lengthMenu": [[10, 20, 50, -1], [10, 20, 50, "All"]],
-        "ajax": {
-            "url": "@Url.Action("GetChecks", "ResearchTable")",
-            "type": "GET"
-        },
-        "columns": [
-            { "data": "RecordID", "orderable": false },
-            { "data": "InterviewRecordID", "orderable": false },
-            { "data": "Name", "orderable": true },
-            { "data": "Num", "orderable": false },
-            { "data": "Date", "orderable": true },
-            { "data": "Service", "orderable": true },
-            { "data": "Disposition", "orderable": false}
-        ],
-        "order": [[2, "asc"]]
+    $(document).ready(function () {
+        $('#researchtable').DataTable({
+            "ajax": {
+                "url": "@Url.Action("GetChecks", "ResearchTable")"
+            },
+            "columns": [
+                { "data": "RecordID", "orderable": false },
+                { "data": "InterviewRecordID", "orderable": false },
+                { "data": "Name", "orderable": true },
+                { "data": "Num", "orderable": false },
+                { "data": "Date", "orderable": true },
+                { "data": "Service", "orderable": true },
+                { "data": "Disposition", "orderable": false }
+            ]
+        });
     });
-});
+
 </script>
 
 <br /><br />

@@ -5,6 +5,7 @@
     Layout = "~/Views/Shared/_Superadmin.cshtml";
 }
 
+
 <script type="text/javascript">
     $(document).ready(function () {
         $('#researchtable').DataTable({
@@ -22,7 +23,7 @@
             ]
         });
     });
-        
+
 </script>
 
 <br /><br />
@@ -71,31 +72,31 @@
 </form>
 
 <script type="text/javascript">
-         /* https://stackoverflow.com/questions/11534690/how-to-do-a-jquery-callback-after-form-submit */
-         /* https://www.airpair.com/js/jquery-ajax-post-tutorial */
-         $("#backupForm").submit(function() {
-             $.ajax({
-                 url: "/OPIDChecks/ResearchTable/GetResearchTable",
-                 dataType: 'json',
-                 type: "POST",
-                 contentType: 'application/x-www-form-urlencoded',
-                 data: $(this).serialize(),
-                 success: function (data, textStatus, jQxhr) {
-                    // alert("Inside backupForm callback: data.rtfileName = " + data.rtFileName);
-                     var textFileAsBlob = new Blob([data.content], { type: 'text/plain' });
+    /* https://stackoverflow.com/questions/11534690/how-to-do-a-jquery-callback-after-form-submit */
+    /* https://www.airpair.com/js/jquery-ajax-post-tutorial */
+    $("#backupForm").submit(function () {
+        $.ajax({
+            url: "/OPIDChecks/ResearchTable/GetResearchTable",
+            dataType: 'json',
+            type: "POST",
+            contentType: 'application/x-www-form-urlencoded',
+            data: $(this).serialize(),
+            success: function (data, textStatus, jQxhr) {
+                // alert("Inside backupForm callback: data.rtfileName = " + data.rtFileName);
+                var textFileAsBlob = new Blob([data.content], { type: 'text/plain' });
 
-                     var downloadLink = document.createElement("a");
-                     downloadLink.download = data.rtFileName + ".csv";
+                var downloadLink = document.createElement("a");
+                downloadLink.download = data.rtFileName + ".csv";
 
-                     downloadLink.innerHtml = "Download Research Table";
-                     downloadLink.href = window.webkitURL.createObjectURL(textFileAsBlob);
-                     downloadLink.click();
-                 },
-                 error: function( jqXhr, textStatus, errorThrown ) {
-                    alert("error thrown: " + errorThrown );
-                }
-             })
-         })
+                downloadLink.innerHtml = "Download Research Table";
+                downloadLink.href = window.webkitURL.createObjectURL(textFileAsBlob);
+                downloadLink.click();
+            },
+            error: function (jqXhr, textStatus, errorThrown) {
+                alert("error thrown: " + errorThrown);
+            }
+        })
+    })
 
 </script>
 
