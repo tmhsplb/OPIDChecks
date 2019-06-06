@@ -52,26 +52,6 @@ namespace OPIDChecks.Controllers
             }, "text/html");
         }
 
-        public ActionResult ResearchTable()
-        {
-            return View();
-        }
-
-        public JsonResult GetChecks()
-        {
-            List<CheckViewModel> checks = DataManager.GetChecks();
-
-            // See https://www.codeproject.com/Tips/1011531/Using-jQuery-DataTables-with-Server-Side-Processing
-            var jsonData = new
-            {
-                draw = 1,
-                recordsTotal = checks.Count,
-                recordsFiltered = checks.Count,
-                data = checks
-            };
-
-            return Json(jsonData, JsonRequestBehavior.AllowGet);
-        }
 
         [HttpPost]
         public ActionResult Restore(FileViewModel model)
