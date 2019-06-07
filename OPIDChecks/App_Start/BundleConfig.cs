@@ -25,6 +25,16 @@ namespace OPIDChecks
             bundles.Add(new ScriptBundle("~/bundles/datatables").Include(
                       "~/Scripts/DataTables/jquery.dataTables.min.js"));
 
+            // jquery mvc5 datatables js files
+            bundles.Add(new ScriptBundle("~/bundles/mvc5datatables").Include(
+                        "~/Scripts/DataTables/jquery.dataTables.min.js",
+                        "~/Scripts/DataTables/dataTables.bootstrap.js",
+                        "~/Scripts/moment.js"));
+
+            // jquery mvc5 datatables css file
+            bundles.Add(new StyleBundle("~/Content/DataTables").Include(
+                      "~/Content/DataTables/css/dataTables.bootstrap.css"));
+
             bundles.Add(new StyleBundle("~/Content/css").Include(
                       "~/Content/bootstrap.css",
                       "~/Content/site.css"));
