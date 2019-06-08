@@ -1,11 +1,11 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 15
-VisualStudioVersion = 15.0.28010.2046
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.28922.388
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OPIDChecks", "OPIDChecks\OPIDChecks.csproj", "{BCC149D4-F380-4378-8ED3-FFCE4CACB14B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OPIDEntities", "OPIDChecks\OPIDEntities\OPIDEntities.csproj", "{9EB82D03-E62B-4162-9A78-4DF9A9AEB5CE}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OPIDEntities", "OPIDChecks\OPIDEntities\OPIDEntities.csproj", "{9EB82D03-E62B-4162-9A78-4DF9A9AEB5CE}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
