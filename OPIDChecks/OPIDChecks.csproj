@@ -16,7 +16,7 @@
     <AssemblyName>OPIDChecks</AssemblyName>
     <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
     <MvcBuildViews>false</MvcBuildViews>
-    <UseIISExpress>true</UseIISExpress>
+    <UseIISExpress>false</UseIISExpress>
     <Use64BitIISExpress />
     <IISExpressSSLPort />
     <IISExpressAnonymousAuthentication />
@@ -210,8 +210,10 @@
     <Compile Include="Config.cs" />
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\AdminController.cs" />
+    <Compile Include="Controllers\FileUploadController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\ManageController.cs" />
+    <Compile Include="Controllers\MergeController.cs" />
     <Compile Include="Controllers\ResearchTableController.cs" />
     <Compile Include="Controllers\RoleController.cs" />
     <Compile Include="Controllers\SuperadminController.cs" />
@@ -668,10 +670,12 @@
     <Content Include="Views\Shared\_Admin.cshtml" />
     <Content Include="Views\Admin\ResearchTable.cshtml" />
     <Content Include="Views\ResearchTable\ResearchTable.cshtml" />
+    <Content Include="Views\Merge\Merge.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
     <Folder Include="Views\FileDownload\" />
+    <Folder Include="Views\FileUpload\" />
     <Folder Include="Views\Home\" />
   </ItemGroup>
   <ItemGroup>

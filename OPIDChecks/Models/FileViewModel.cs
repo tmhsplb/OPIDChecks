@@ -10,5 +10,5 @@ namespace OPIDChecks.Models
     {
         [Required]
         public HttpPostedFileBase File { get; set; }
-    }
+     }
 }

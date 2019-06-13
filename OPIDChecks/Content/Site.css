@@ -27,10 +27,18 @@ textarea {
     display: none;
 }
 
+
+
 label {
     display: inline-block;
     text-align: right;
 }
+
+.mergelabel {
+    color: green;
+    float: left;
+}
+
 
 input + label {
     text-align: left

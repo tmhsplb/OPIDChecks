@@ -1,0 +1,201 @@
+﻿@model OPIDChecks.Models.FileViewModel
+
+@{
+    ViewBag.Title = "Merge";
+    Layout = "~/Views/Shared/_Admin.cshtml";
+}
+
+<br /><br /><br />
+            <div>
+                <fieldset>
+                    <legend>Interview Research File</legend>
+
+                    @using (Html.BeginForm("UploadInterviewResearchFile", "Merge", FormMethod.Post, new { enctype = "multipart/form-data", @class = "form-horizontal", role = "form" }))
+                    {
+                        // Idea for
+                        //   TextxboxFor(m => m.File, new { type = "file"})
+                        // comes from https://stackoverflow.com/questions/304617/html-helper-for-input-type-file
+                        @Html.AntiForgeryToken()
+                        @Html.ValidationMessage("InterviewResearchError", new { @class = "text-danger" })
+
+                        <table style="width:100%;">
+                            <tr>
+                                <td>
+                                    <div class="form-group">
+                                        <label class="control-label">Interview Research File</label>
+                                        @Html.TextBoxFor(m => m.File, new { type = "file" })
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="form-group">
+                                        <input type="submit" value="Upload" />
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    @ViewData["UploadedIRFile"]
+                                </td>
+                            </tr>
+                        </table>
+                    }
+                </fieldset>
+
+                <br /><br /><br />
+
+                            <fieldset>
+                                <legend>Disposition Files</legend>
+
+                                @using (Html.BeginForm("UploadVoidedChecksFile", "Merge", FormMethod.Post, new { enctype = "multipart/form-data", @class = "form-horizontal", role = "form" }))
+                                {
+                                    // Idea for
+                                    //   TextxboxFor(m => m.File, new { type = "file"})
+                                    // comes from https://stackoverflow.com/questions/304617/html-helper-for-input-type-file
+                                    @Html.AntiForgeryToken()
+                                    @Html.ValidationMessage("VoidedChecksError", new { @class = "text-danger" })
+
+                            <table style="width:100%;">
+                                <tr>
+                                    <td>
+                                        <div class="form-group">
+                                            <label class="control-label">Voided Checks File</label>
+                                            @Html.TextBoxFor(m => m.File, new { type = "file" })
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <div class="form-group">
+                                            <input type="submit" value="Upload" />
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        @ViewData["UploadedVCFile"]
+                                    </td>
+                                </tr>
+
+                            </table>
+                                }
+
+                                <br /><br />
+
+                                @using (Html.BeginForm("UploadClearedChecksFile", "Merge", FormMethod.Post, new { enctype = "multipart/form-data", @class = "form-horizontal", role = "form" }))
+                                {
+                                    // Idea for
+                                    //   TextxboxFor(m => m.File, new { type = "file"})
+                                    // comes from https://stackoverflow.com/questions/304617/html-helper-for-input-type-file
+                                    @Html.AntiForgeryToken()
+                                    @Html.ValidationMessage("ClearedChecksError", new { @class = "text-danger" })
+
+                            <table style="width:100%;">
+                                <tr>
+                                    <td>
+                                        <div class="form-group">
+                                            <label class="control-label">Cleared Checks File</label>
+                                            @Html.TextBoxFor(m => m.File, new { type = "file" })
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <div class="form-group">
+                                            <input type="submit" value="Upload" />
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        @ViewData["UploadedCCFile"]
+                                    </td>
+                                </tr>
+
+                            </table>
+                                }
+
+                            </fieldset>
+
+                <br /><br /><br />
+
+                <br />
+                <br />
+                <br />
+                <fieldset>
+                    <legend>Mistakenly Resolved</legend>
+                    <table style="width:100%;">
+                        <tr>
+                            <td>Mistakenly Resolved Checks File</td>
+                            <td>
+                                <input type="file" ng-model="MRUploadedFile" onchange="angular.element(this).scope().setFiles('MR', this);" />
+                            </td>
+                            <td>
+                                <input type="button" value="Upload" ng-click="MRUpload();" />
+                            </td>
+
+                        </tr>
+
+                        <tr>
+                            <td>
+                                Uploaded File
+                            </td>
+                            <td>{{MRUploadedFile}}</td>
+                        </tr>
+
+                        <tr><td>&nbsp;</td></tr>
+
+                        <tr>
+                            <td>Re-Resolve Cleared Checks File</td>
+                            <td>
+                                <input type="file" ng-model="RRCUploadedFile" onchange="angular.element(this).scope().setFiles('RRC', this);" />
+                            </td>
+                            <td>
+                                <input type="button" value="Upload" ng-click="RRCUpload();" />
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <td>
+                                Uploaded File
+                            </td>
+                            <td>{{RRCUploadedFile}}</td>
+                        </tr>
+
+                        <tr><td>&nbsp;</td></tr>
+
+                        <tr>
+                            <td>Re-Resolve Voided Checks File</td>
+                            <td>
+                                <input type="file" ng-model="RRVUploadedFile" onchange="angular.element(this).scope().setFiles('RRV', this);" />
+                            </td>
+                            <td>
+                                <input type="button" value="Upload" ng-click="RRVUpload();" />
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <td>
+                                Uploaded File
+                            </td>
+                            <td>{{RRVUploadedFile}}</td>
+                        </tr>
+                    </table>
+                </fieldset>
+                <br />
+                <br />
+                <br />
+                @using (Html.BeginForm("PerformMerge", "Merge", FormMethod.Post, new { enctype = "multipart/form-data", @class = "form-horizontal", role = "form" }))
+                {
+                    <table width="100%">
+                        <tr>
+                            <td>
+                                <div class="form-group">
+                                    <input type="submit" value="Merge" />
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>@ViewData["MergeStatus"]</td>
+                        </tr>
+                    </table>
+                }
+  </div>
+
+
+
