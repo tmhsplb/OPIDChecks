@@ -123,7 +123,7 @@ namespace OPIDChecks.Controllers
                     return View("ResearchTable", model);
                 }
 
-                List<string> docfiles = DataManager.UploadFile(postedFile);
+                List<string> docfiles = FileUploader.UploadFile(postedFile);
                  
                 DataManager.RestoreResearchTable(postedFile.FileName);
                 return View("ResearchTable", model);

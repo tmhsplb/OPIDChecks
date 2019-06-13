@@ -1,4 +1,5 @@
 ﻿using OPIDChecks.Models;
+using OPIDChecks.Utils;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -13,31 +14,13 @@ namespace OPIDChecks.DAL
 {
     public class FileDownloader
     {
-        public static string GetTimestamp()
-        {
-            // Set timestamp when resolvedController is loaded. This allows
-            // the timestamp to be made part of the page title, which allows
-            // the timestamp to appear in the printed file and also as part
-            // of the Excel file name of both the angular datatable and
-            // the importme file.
-
-            // This compensates for the fact that DateTime.Now on the AppHarbor server returns
-            // the time in the timezone of the server.
-            // Here we convert UTC to Central Standard Time to get the time in Houston.
-            // It also properly handles daylight savings time.
-            DateTime now = DateTime.Now.ToUniversalTime();
-            DateTime cst = TimeZoneInfo.ConvertTimeBySystemTimeZoneId(now, "UTC", "Central Standard Time");
-            string timestamp = cst.ToString("dd-MMM-yyyy-hhmm");
-
-            return timestamp;
-        } 
         public static string DownloadResearchTable()
         {
             List<CheckViewModel> checks = DataManager.GetChecks();
            
             if (checks != null)
             {
-                string timestamp = GetTimestamp();
+                string timestamp = Extras.GetTimestamp();
                 string fname = string.Format("Research {0}", timestamp);
                 string pathToResearchTableFile = System.Web.HttpContext.Current.Request.MapPath(string.Format("~/Downloads/{0}.csv", fname));
 

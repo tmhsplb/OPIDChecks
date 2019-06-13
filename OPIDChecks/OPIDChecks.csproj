@@ -220,6 +220,7 @@
     <Compile Include="Controllers\UsersController.cs" />
     <Compile Include="DAL\DataManager.cs" />
     <Compile Include="DAL\FileDownloader.cs" />
+    <Compile Include="DAL\FileUploader.cs" />
     <Compile Include="DataContexts\IdentityDB.cs" />
     <Compile Include="DataContexts\IdentityMigrations\Configuration.cs" />
     <Compile Include="DataContexts\OpidDB.cs" />
@@ -251,6 +252,7 @@
     <Compile Include="Startup.cs" />
     <Compile Include="Utils\ExcelData.cs" />
     <Compile Include="Utils\MyExcelDataReader.cs" />
+    <Compile Include="Utils\Utils.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Content\bootstrap-theme.css" />

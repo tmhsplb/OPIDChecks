@@ -114,68 +114,101 @@
 
                 <br /><br /><br />
 
-                <br />
-                <br />
-                <br />
                 <fieldset>
                     <legend>Mistakenly Resolved</legend>
-                    <table style="width:100%;">
-                        <tr>
-                            <td>Mistakenly Resolved Checks File</td>
-                            <td>
-                                <input type="file" ng-model="MRUploadedFile" onchange="angular.element(this).scope().setFiles('MR', this);" />
-                            </td>
-                            <td>
-                                <input type="button" value="Upload" ng-click="MRUpload();" />
-                            </td>
 
-                        </tr>
+                    @using (Html.BeginForm("UploadReResolvedChecksFile", "Merge", FormMethod.Post, new { enctype = "multipart/form-data", @class = "form-horizontal", role = "form" }))
+                    {
+                        // Idea for
+                        //   TextxboxFor(m => m.File, new { type = "file"})
+                        // comes from https://stackoverflow.com/questions/304617/html-helper-for-input-type-file
+                        @Html.AntiForgeryToken()
+                        @Html.ValidationMessage("ReresolvedChecksError", new { @class = "text-danger" })
 
-                        <tr>
-                            <td>
-                                Uploaded File
-                            </td>
-                            <td>{{MRUploadedFile}}</td>
-                        </tr>
+                        <table style="width:100%;">
+                            <tr>
+                                <td>
+                                    <div class="form-group">
+                                        <label class="control-label">Mistakenly Resolved Checks File</label>
+                                        @Html.TextBoxFor(m => m.File, new { type = "file" })
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="form-group">
+                                        <input type="submit" value="Upload" />
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    @ViewData["UploadedRRCFile"]
+                                </td>
+                            </tr>
+                        </table>
+                    }
 
-                        <tr><td>&nbsp;</td></tr>
+                    @using (Html.BeginForm("UploadReresolvedVoidedChecksFile", "Merge", FormMethod.Post, new { enctype = "multipart/form-data", @class = "form-horizontal", role = "form" }))
+                    {
+                        // Idea for
+                        //   TextxboxFor(m => m.File, new { type = "file"})
+                        // comes from https://stackoverflow.com/questions/304617/html-helper-for-input-type-file
+                        @Html.AntiForgeryToken()
+                        @Html.ValidationMessage("RRVoidedChecksError", new { @class = "text-danger" })
 
-                        <tr>
-                            <td>Re-Resolve Cleared Checks File</td>
-                            <td>
-                                <input type="file" ng-model="RRCUploadedFile" onchange="angular.element(this).scope().setFiles('RRC', this);" />
-                            </td>
-                            <td>
-                                <input type="button" value="Upload" ng-click="RRCUpload();" />
-                            </td>
-                        </tr>
+                        <table style="width:100%;">
+                            <tr>
+                                <td>
+                                    <div class="form-group">
+                                        <label class="control-label">Re-Resolve Voided Checks File</label>
+                                        @Html.TextBoxFor(m => m.File, new { type = "file" })
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="form-group">
+                                        <input type="submit" value="Upload" />
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    @ViewData["UploadedRRVCFile"]
+                                </td>
+                            </tr>
 
-                        <tr>
-                            <td>
-                                Uploaded File
-                            </td>
-                            <td>{{RRCUploadedFile}}</td>
-                        </tr>
+                        </table>
+                    }
 
-                        <tr><td>&nbsp;</td></tr>
+                    @using (Html.BeginForm("UploadReresolvedClearedChecksFile", "Merge", FormMethod.Post, new { enctype = "multipart/form-data", @class = "form-horizontal", role = "form" }))
+                    {
+                        // Idea for
+                        //   TextxboxFor(m => m.File, new { type = "file"})
+                        // comes from https://stackoverflow.com/questions/304617/html-helper-for-input-type-file
+                        @Html.AntiForgeryToken()
+                        @Html.ValidationMessage("RRClearedChecksError", new { @class = "text-danger" })
 
-                        <tr>
-                            <td>Re-Resolve Voided Checks File</td>
-                            <td>
-                                <input type="file" ng-model="RRVUploadedFile" onchange="angular.element(this).scope().setFiles('RRV', this);" />
-                            </td>
-                            <td>
-                                <input type="button" value="Upload" ng-click="RRVUpload();" />
-                            </td>
-                        </tr>
+                        <table style="width:100%;">
+                            <tr>
+                                <td>
+                                    <div class="form-group">
+                                        <label class="control-label">Re-Resolve Cleared Checks File</label>
+                                        @Html.TextBoxFor(m => m.File, new { type = "file" })
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="form-group">
+                                        <input type="submit" value="Upload" />
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    @ViewData["UploadedRRCFile"]
+                                </td>
+                            </tr>
 
-                        <tr>
-                            <td>
-                                Uploaded File
-                            </td>
-                            <td>{{RRVUploadedFile}}</td>
-                        </tr>
-                    </table>
+                        </table>
+                    }
+                     
                 </fieldset>
                 <br />
                 <br />
