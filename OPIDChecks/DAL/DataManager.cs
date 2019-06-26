@@ -42,9 +42,150 @@ namespace OPIDChecks.DAL
 
         public static void PersistUnmatchedChecks(List<DispositionRow> researchRows)
         {
-           // List<Check> unmatchedChecks = DetermineUnmatchedChecks(researchRows);
+            List<Check> unmatchedChecks = DetermineUnmatchedChecks(researchRows);
             AppendToUnresolvedChecks(unmatchedChecks);
         }
+
+        public static void NewUnmatchedCheck(DispositionRow row, string service, string disposition)
+        {
+            int checkNum;
+
+            switch (service)
+            {
+                case "LBVD":
+                    checkNum = row.LBVDCheckNum;
+                    break;
+                case "LBVD2":
+                    checkNum = row.LBVDCheckNum2;
+                    break;
+                case "LBVD3":
+                    checkNum = row.LBVDCheckNum3;
+                    break;
+                case "TID":
+                    checkNum = row.TIDCheckNum;
+                    break;
+                case "TID2":
+                    checkNum = row.TIDCheckNum2;
+                    break;
+                case "TID3":
+                    checkNum = row.TIDCheckNum3;
+                    break;
+                case "TDL":
+                    checkNum = row.TDLCheckNum;
+                    break;
+                case "TDL2":
+                    checkNum = row.TDLCheckNum2;
+                    break;
+                case "TDL3":
+                    checkNum = row.TDLCheckNum3;
+                    break;
+                case "MBVD":
+                    checkNum = row.MBVDCheckNum;
+                    break;
+                case "MBVD2":
+                    checkNum = row.MBVDCheckNum2;
+                    break;
+                case "MBVD3":
+                    checkNum = row.MBVDCheckNum3;
+                    break;
+                case "SD":
+                    checkNum = row.SDCheckNum;
+                    break;
+                default:
+                    checkNum = -1;
+                    break;
+            }
+
+            unmatchedChecks.Add(new Check
+            {
+                RecordID = row.RecordID,
+                InterviewRecordID = row.InterviewRecordID,
+                Num = checkNum,
+                Name = string.Format("{0}, {1}", row.Lname, row.Fname),
+                Date = row.Date,
+                Service = service,
+                Disposition = disposition
+            });
+        }
+
+        private static List<Check> DetermineUnmatchedChecks(List<DispositionRow> researchRows)
+        {
+            foreach (DispositionRow row in researchRows)
+            {
+                if (row.LBVDCheckNum != 0)
+                {
+                    NewUnmatchedCheck(row, "LBVD", row.LBVDCheckDisposition);
+                }
+
+                if (row.LBVDCheckNum2 != 0)
+                {
+                    NewUnmatchedCheck(row, "LBVD2", row.LBVDCheck2Disposition);
+                }
+
+                if (row.LBVDCheckNum3 != 0)
+                {
+                    NewUnmatchedCheck(row, "LBVD3", row.LBVDCheck3Disposition);
+                }
+
+                if (row.TIDCheckNum != 0)
+                {
+                    if (!string.IsNullOrEmpty(row.TIDCheckDisposition))
+                    {
+                        int z;
+                        z = 2;
+                    }
+                    NewUnmatchedCheck(row, "TID", row.TIDCheckDisposition);
+                }
+
+                if (row.TIDCheckNum2 != 0)
+                {
+                    NewUnmatchedCheck(row, "TID2", row.TIDCheck2Disposition);
+                }
+
+                if (row.TIDCheckNum3 != 0)
+                {
+                    NewUnmatchedCheck(row, "TID3", row.TIDCheck3Disposition);
+                }
+
+                if (row.TDLCheckNum != 0)
+                {
+                    NewUnmatchedCheck(row, "TDL", row.TDLCheckDisposition);
+                }
+
+                if (row.TDLCheckNum2 != 0)
+                {
+                    NewUnmatchedCheck(row, "TDL2", row.TDLCheck2Disposition);
+                }
+
+                if (row.TDLCheckNum3 != 0)
+                {
+                    NewUnmatchedCheck(row, "TDL3", row.TDLCheck3Disposition);
+                }
+
+                if (row.MBVDCheckNum != 0)
+                {
+                    NewUnmatchedCheck(row, "MBVD", row.MBVDCheckDisposition);
+                }
+
+                if (row.MBVDCheckNum2 != 0)
+                {
+                    NewUnmatchedCheck(row, "MBVD2", row.MBVDCheck2Disposition);
+                }
+
+                if (row.MBVDCheckNum3 != 0)
+                {
+                    NewUnmatchedCheck(row, "MBVD3", row.MBVDCheck3Disposition);
+                }
+
+                if (row.SDCheckNum != 0)
+                {
+                    NewUnmatchedCheck(row, "SD", row.SDCheckDisposition);
+                }
+            }
+
+            return unmatchedChecks;
+        }
+
 
         private static void AppendToUnresolvedChecks(List<Check> checks)
         {
@@ -61,8 +202,11 @@ namespace OPIDChecks.DAL
                             RCheck unresolved = new RCheck
                             {
                                 RecordID = check.RecordID,
+                                sRecordID = check.RecordID.ToString(),
                                 InterviewRecordID = check.InterviewRecordID,
+                                sInterviewRecordID = check.InterviewRecordID.ToString(),
                                 Num = check.Num,
+                                sNum = check.Num.ToString(),
                                 Name = check.Name,
                                 Date = check.Date,
                                 Service = check.Service,
