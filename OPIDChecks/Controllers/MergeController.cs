@@ -36,6 +36,7 @@ namespace OPIDChecks.Controllers
 
                 List<string> docfiles = FileUploader.UploadFile(postedFile);
                 TempData["UploadedFile"] = fname;
+                TempData["FileType"] = "InterviewResearch";
                 ViewData["UploadedIRFile"] =  string.Format("Uploaded File: {0}", fname);
 
                 return View("Merge", model);
@@ -179,15 +180,17 @@ namespace OPIDChecks.Controllers
         public ActionResult PerformMerge()
         {
             string uploadedFile = TempData["UploadedFile"] as string;
+            string fileType = TempData["FileType"] as string;
 
             if (string.IsNullOrEmpty(uploadedFile))
             {
                 ViewData["MergeStatus"] = "Please choose a file to merge";
                 return View("Merge");
             }
-            
-            ViewData["MergeStatus"] = "Merge Complete";
 
+            Merger.PerformMerge(uploadedFile, fileType);
+
+            ViewData["MergeStatus"] = "Merge Complete";
             return View("Merge");
         }
     }

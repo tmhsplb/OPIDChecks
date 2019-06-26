@@ -49,21 +49,21 @@ namespace OPIDChecks.Controllers
                 return status;
             }
 
-            DataManager.ExtendInvitation(invite);
+            Identity.ExtendInvitation(invite);
 
             return "Success";
         }
 
         public string EditUser(InvitationViewModel invite)
         {
-            string status = DataManager.EditUser(invite);
+            string status = Identity.EditUser(invite);
             return status;
         }
 
 
         public JsonResult GetUsers(int page, int rows)
         {
-            List<InvitationViewModel> invitations = DataManager.GetUsers();
+            List<InvitationViewModel> invitations = Identity.GetUsers();
 
             var jsonData = new
             {
