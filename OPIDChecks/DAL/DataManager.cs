@@ -18,154 +18,81 @@ namespace OPIDChecks.DAL
 {
     public class DataManager
     {
-        private static RoleViewModel RoleEntityToRoleViewModel(IdentityRole idRole)
+        private static bool firstCall = true;
+        private static List<int> incidentals;
+
+        private static List<Check> unmatchedChecks;
+        private static List<Check> resolvedChecks;
+        private static List<int> mistakenlyResolved;
+        private static List<Check> typoChecks;
+
+        public static void Init()
         {
-            return new RoleViewModel
+            if (firstCall)
             {
-                Id = idRole.Id,
-                Name = idRole.Name
-            };
-        }
-
-        public static List<RoleViewModel> GetRoles()
-        {
-            using (IdentityDB identitycontext = new DataContexts.IdentityDB())
-            {
-                List<RoleViewModel> roles = new List<RoleViewModel>();
-                List<IdentityRole> identityRoles = identitycontext.Roles.ToList();
-
-                foreach (IdentityRole idRole in identityRoles)
-                {
-                    roles.Add(RoleEntityToRoleViewModel(idRole));
-                }
-
-                return roles;
+                typoChecks = new List<Check>();
+                resolvedChecks = new List<Check>();
+                mistakenlyResolved = new List<int>();
+                firstCall = false;
             }
+
+            unmatchedChecks = new List<Check>();
+            incidentals = new List<int>();
         }
 
-        private static InvitationViewModel InviteToInvitationViewModel(Invitation invite)
+        public static void PersistUnmatchedChecks(List<DispositionRow> researchRows)
         {
-            return new InvitationViewModel
-            {
-                Id = invite.Id,
-                Extended = invite.Extended.ToString("MM/dd/yyyy"),
-                Accepted = (invite.Accepted == (System.DateTime)System.Data.SqlTypes.SqlDateTime.Null ? string.Empty : invite.Accepted.ToString("MM/dd/yyyy")),
-                UserName = invite.UserName,
-                FullName = invite.FullName,
-                Email = invite.Email,
-                Role = invite.Role,
-            };
+           // List<Check> unmatchedChecks = DetermineUnmatchedChecks(researchRows);
+            AppendToUnresolvedChecks(unmatchedChecks);
         }
 
-        public static string EditUser(InvitationViewModel invite)
+        private static void AppendToUnresolvedChecks(List<Check> checks)
         {
-            using (OpidDB referralscontext = new OpidDB())
+            try
             {
-                Invitation invitation = referralscontext.Invitations.Find(invite.Id);
-
-                if (invitation != null && invitation.Accepted != (System.DateTime)System.Data.SqlTypes.SqlDateTime.Null)
+                using (OpidDB opidcontext = new OpidDB())
                 {
-                    return "Registered";
-                }
+                    foreach (Check check in checks)
+                    {
+                        RCheck existing = opidcontext.RChecks.Where(u => u.Num == check.Num).FirstOrDefault();
 
-                invitation.UserName = invite.UserName;
-                invitation.Email = invite.Email;
-                invitation.Role = invite.Role;
+                        if (existing == null) // && string.IsNullOrEmpty(check.Clr))
+                        {
+                            RCheck unresolved = new RCheck
+                            {
+                                RecordID = check.RecordID,
+                                InterviewRecordID = check.InterviewRecordID,
+                                Num = check.Num,
+                                Name = check.Name,
+                                Date = check.Date,
+                                Service = check.Service,
+                                Disposition = check.Disposition,
+                                Matched = false
+                            };
 
-                referralscontext.SaveChanges();
-                return "Success";
-            }
-        }
+                            opidcontext.RChecks.Add(unresolved);
+                        }
+                        else if (!string.IsNullOrEmpty(check.Disposition))
+                        {
+                            // The existing check may have its disposition
+                            // changed to, for example, Voided/Replaced.
+                            // If a file of voided checks contains a check with number existing.Num
+                            // then this change of disposition will protect this check from having its status
+                            // in Apricot changed from Voided/Replaced to Voided
+                            existing.Disposition = check.Disposition;
+                        }
+                    }
 
-        public static Invitation AcceptedInvitation(string userName, string email)
-        {
-            using (OpidDB opidcontext = new OpidDB())
-            {
-                Invitation invite = opidcontext.Invitations.Where(i => i.UserName == userName).SingleOrDefault();
-
-                if (invite != null && invite.Email == email)
-                {
-                    invite.Accepted = DateTime.Today;
                     opidcontext.SaveChanges();
-                    return invite;
                 }
-
-                return null;
             }
-        }
-
-        private static string InvitationMessage(InvitationViewModel invitation)
-        {
-            string line1 = "You have been invited to register for use of OPIDChecks, the OPID Check Management System of Main Street Ministries.";
-            string line2 = "Please go to opidchecks.apphb.com and click on the Register link in the main menu.";
-            string line3 = string.Format("Fill out the registration form using <strong>{0}</strong> as your email address, <strong>{1}</strong> as your User Name and a password you can remember.", invitation.Email, invitation.UserName);
-            string line4 = string.Format("Upon completing your registration you will be logged in to the OPID Check Management System in the role of <strong>{0}</strong>.", invitation.Role);
-            return string.Format("<p>{0}<br/>{1}<br/>{2}<br/>{3}", line1, line2, line3, line4);
-        }
-
-        /*
-        private static void SendEmailInvitation(InvitationViewModel invitation)
-        {
-            var message = new MailMessage();
-            message.To.Add(new MailAddress(invitation.Email));
-            message.From = new MailAddress(ConfigurationManager.AppSettings["DonotreplyEmailAddr"]);
-            message.Subject = "Invitation";
-            message.Body = InvitationMessage(invitation);
-            message.IsBodyHtml = true;
-
-            using (var smtp = new SmtpClient())
+            catch (Exception e)
             {
-                var credential = new NetworkCredential
-                {
-                    UserName = ConfigurationManager.AppSettings["GmailUser"],
-                    Password = ConfigurationManager.AppSettings["GmailUserPassword"]
-                };
-
-                smtp.Credentials = credential;
-                smtp.Host = "smtp.gmail.com";
-                smtp.Port = 587;
-                smtp.EnableSsl = true;
-                smtp.Send(message);
+                int z;
+                z = 2;
             }
         }
-        */
 
-        public static void ExtendInvitation(InvitationViewModel invitation)
-        {
-            using (OpidDB opidcontext = new OpidDB())
-            {
-                Invitation invite = new Invitation
-                {
-                    Extended = DateTime.Today,
-                    Accepted = (System.DateTime)System.Data.SqlTypes.SqlDateTime.Null,
-                    UserName = invitation.UserName,
-                    FullName = invitation.FullName,
-                    Email = invitation.Email,
-                    Role = invitation.Role,
-                };
-
-                opidcontext.Invitations.Add(invite);
-                opidcontext.SaveChanges();
-            }
-
-            //  SendEmailInvitation(invitation);
-        }
-
-        public static List<InvitationViewModel> GetUsers()
-        {
-            using (OpidDB opidcontext = new DataContexts.OpidDB())
-            {
-                List<InvitationViewModel> invitations = new List<InvitationViewModel>();
-                List<Invitation> invites = opidcontext.Invitations.ToList();
-
-                foreach (Invitation invite in invites)
-                {
-                    invitations.Add(InviteToInvitationViewModel(invite));
-                }
-
-                return invitations;
-            }
-        }
 
         public static List<CheckViewModel> GetChecks()
         {
@@ -264,8 +191,11 @@ namespace OPIDChecks.DAL
                         checks.Add(new RCheck
                         {
                             RecordID = rc.RecordID,
+                            sRecordID = rc.sRecordID,
                             InterviewRecordID = rc.InterviewRecordID,
+                            sInterviewRecordID = rc.sInterviewRecordID,
                             Num = rc.Num,
+                            sNum = rc.sNum,
                             Name = rc.Name,
                             Date = Convert.ToDateTime(rc.Date),  
                             Service = rc.Service,
@@ -279,7 +209,15 @@ namespace OPIDChecks.DAL
             }
         }
 
-        
+        public static List<DispositionRow> GetResearchRows(string uploadedFile)
+        {
+            // List<DispositionRow> originalRows = new List<DispositionRow>();
+            //  string pathToApricotReportFile = System.Web.HttpContext.Current.Request.MapPath(string.Format("~/App_Data/Public/{0}.{1}", apFileName, apFileType));
+            string pathToResearchReportFile = System.Web.HttpContext.Current.Request.MapPath(string.Format("~/Uploads/{0}", uploadedFile));
 
+            List<DispositionRow> resRows = MyExcelDataReader.GetResearchRows(pathToResearchReportFile);
+
+            return resRows;
         }
+    }
 }

@@ -56,9 +56,9 @@ namespace OPIDChecks.Controllers
                 {
                     var value = requestModel.Search.Value.Trim();
                     query = query.Where(p => p.Name.Contains(value) ||
-                                             p.RecordID.Contains(value) ||
-                                             p.InterviewRecordID.Contains(value) ||
-                                             p.Num.Contains(value) ||
+                                             p.sRecordID.Contains(value) ||
+                                             p.sInterviewRecordID.Contains(value) ||
+                                             p.sNum.Contains(value) ||
                                              p.Service.Contains(value) ||
                                              p.Disposition.Contains(value)
                                        );
@@ -73,10 +73,10 @@ namespace OPIDChecks.Controllers
                 
                 var data = query.Select(rcheck => new
                 {
-                    RecordID = rcheck.RecordID,
-                    InterviewRecordID = rcheck.InterviewRecordID,
+                    sRecordID = rcheck.sRecordID,
+                    sInterviewRecordID = rcheck.sInterviewRecordID,
                     Name = rcheck.Name,
-                    Num = rcheck.Num,
+                    sNum = rcheck.sNum,
                     Date = rcheck.Date,
                     Service = rcheck.Service,
                     Disposition = rcheck.Disposition
