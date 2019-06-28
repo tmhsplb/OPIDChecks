@@ -254,7 +254,7 @@ namespace OPIDChecks.DAL
                         InterviewRecordID = rc.InterviewRecordID,
                         Num = rc.Num,
                         Name = rc.Name,
-                        Date = rc.Date.ToShortDateString(),
+                        Date = rc.Date, //rc.Date.ToShortDateString(),
                         Service = rc.Service,
                         Disposition = rc.Disposition
                     });
@@ -341,7 +341,8 @@ namespace OPIDChecks.DAL
                             Num = rc.Num,
                             sNum = rc.sNum,
                             Name = rc.Name,
-                            Date = Convert.ToDateTime(rc.Date),  
+                            Date = Convert.ToDateTime(rc.Date), 
+                            sDate = Convert.ToDateTime(rc.Date).ToString("MM/dd/yyyy"),
                             Service = rc.Service,
                             Disposition = rc.Disposition
                         });

@@ -14,7 +14,8 @@ namespace OPIDChecks.Models
         public string Name { get; set; }
         public int Num { get; set; }
         public string sNum { get; set; }
-        public string Date { get; set; }
+        public DateTime Date { get; set; } // string Date { get; set; }
+        public string sDate { get; set; }
         public string Service { get; set; }
         public string Disposition { get; set; }
     }

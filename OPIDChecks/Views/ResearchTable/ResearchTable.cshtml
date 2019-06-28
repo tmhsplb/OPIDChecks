@@ -40,15 +40,7 @@
                             { "title": "Interview Record ID", "data": "sInterviewRecordID", "searchable": true },
                             { "title": "Name", "data": "Name", "searchable": true },
                             { "title": "Num", "data": "sNum", "searchable": true },
-                            {
-                                "title": "Date", "data": "Date",
-                                render: function(data, type, row) {
-                                  if(type === "sort" || type === "type"){
-                                    return data;
-                                  }
-                                  return moment(data).format("MM-DD-YYYY");
-                                }
-                            },
+                            { "title": "Date", "data": "sDate", "searchable": true },
                             { "title": "Service", "data": "Service" },
                             { "title": "Disposition", "data": "Disposition" }
                         ],

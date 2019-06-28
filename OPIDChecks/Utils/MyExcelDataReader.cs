@@ -13,7 +13,8 @@ namespace OPIDChecks.Utils
         {
             List<CheckViewModel> rchecks = new ExcelData(filePath).GetData().Select(dataRow => new CheckViewModel
             {
-                Date = dataRow["Date"].ToString(),
+                Date = Convert.ToDateTime(dataRow["Date"].ToString()), //dataRow["Date"].ToString(),
+                sDate = Convert.ToDateTime(dataRow["Date"].ToString()).ToString("MM/dd/yyyy"),
                 RecordID = Convert.ToInt32(dataRow["Record ID"].ToString()),
                 sRecordID = dataRow["Record ID"].ToString(),
                 InterviewRecordID = Convert.ToInt32(dataRow["Interview Record ID"].ToString()),
