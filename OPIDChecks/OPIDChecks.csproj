@@ -242,6 +242,10 @@
     <Compile Include="DataContexts\OPIDMigrations\201906261613254_RCheckExpansion.Designer.cs">
       <DependentUpon>201906261613254_RCheckExpansion.cs</DependentUpon>
     </Compile>
+    <Compile Include="DataContexts\OPIDMigrations\201906281259320_StringifyDate.cs" />
+    <Compile Include="DataContexts\OPIDMigrations\201906281259320_StringifyDate.Designer.cs">
+      <DependentUpon>201906281259320_StringifyDate.cs</DependentUpon>
+    </Compile>
     <Compile Include="DataContexts\OPIDMigrations\Configuration.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
@@ -720,6 +724,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="DataContexts\OPIDMigrations\201906261613254_RCheckExpansion.resx">
       <DependentUpon>201906261613254_RCheckExpansion.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="DataContexts\OPIDMigrations\201906281259320_StringifyDate.resx">
+      <DependentUpon>201906281259320_StringifyDate.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

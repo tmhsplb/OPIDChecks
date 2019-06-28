@@ -15,6 +15,7 @@ namespace OPIDEntities
         public int Num { get; set; }
         public string sNum { get; set; }
         public System.DateTime Date { get; set; }
+        public string sDate { get; set; }
         public string Service { get; set; }
         public string Disposition { get; set; }
         public bool Matched { get; set; }

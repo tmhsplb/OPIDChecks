@@ -59,6 +59,7 @@ namespace OPIDChecks.Controllers
                                              p.sRecordID.Contains(value) ||
                                              p.sInterviewRecordID.Contains(value) ||
                                              p.sNum.Contains(value) ||
+                                             p.sDate.Contains(value) ||
                                              p.Service.Contains(value) ||
                                              p.Disposition.Contains(value)
                                        );
@@ -77,7 +78,8 @@ namespace OPIDChecks.Controllers
                     sInterviewRecordID = rcheck.sInterviewRecordID,
                     Name = rcheck.Name,
                     sNum = rcheck.sNum,
-                    Date = rcheck.Date,
+                  //  Date = rcheck.Date,
+                    sDate = rcheck.sDate,
                     Service = rcheck.Service,
                     Disposition = rcheck.Disposition
                 }).ToList();
