@@ -25,5 +25,19 @@ namespace OPIDChecks.Utils
 
             return timestamp;
         }
+
+        public static string GetResearchTableName()
+        {
+            string timestamp = GetTimestamp();
+            string fname = string.Format("Research {0}", timestamp);
+            return fname;
+        }
+
+        public static string GetImportMeFileName()
+        {
+            string timestamp = GetTimestamp();
+            string fname = string.Format("interview-importme-{0}", timestamp);
+            return fname;
+        }
     }
 }

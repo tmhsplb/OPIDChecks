@@ -19,26 +19,10 @@ using DataTables.Mvc;
 namespace OPIDChecks.Controllers
 {
     public class ResearchTableController : Controller
-    { 
-       
-        [HttpPost]
-        public JsonResult GetResearchTable()
-        {
-            
-            string researchTableFileName = DataManager.GetResearchTableName();
-            string content = DataManager.GetResearchTableCSV();
-
-            return Json(new
-            {
-                rtFileName = researchTableFileName,
-                content = content
-            }, "text/html");
-        }
-
+    {
         public ActionResult ResearchTable()
         {
             return View();
-           // return View("MVC5ResearchTable");
         }
 
         // Don't know how to move this to the DataManager where it belongs because of return type issues.
@@ -87,24 +71,6 @@ namespace OPIDChecks.Controllers
                 return Json(new DataTablesResponse(requestModel.Draw, data, filteredCount, totalCount), JsonRequestBehavior.AllowGet);
             }
         }
-
-        /*
-        public JsonResult GetChecks()
-        {
-            List<CheckViewModel> checks = DataManager.GetChecks();
-
-            // See https://www.codeproject.com/Tips/1011531/Using-jQuery-DataTables-with-Server-Side-Processing
-            var jsonData = new
-            {
-                draw = 1,
-                recordsTotal = checks.Count,
-                recordsFiltered = checks.Count,
-                data = checks
-            };
-
-            return Json(jsonData, JsonRequestBehavior.AllowGet);
-        }
-        */
 
         [HttpPost]
         public ActionResult Restore(FileViewModel model)
