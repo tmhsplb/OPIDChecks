@@ -21,8 +21,8 @@ namespace OPIDChecks.DAL
         private static bool firstCall = true;
         private static List<int> incidentals;
 
-        private static List<Check> unmatchedChecks;
-        private static List<Check> resolvedChecks;
+        private static List<Check> newResearchChecks;
+        private static List<CheckViewModel> resolvedChecks;
         private static List<int> mistakenlyResolved;
         private static List<Check> typoChecks;
 
@@ -31,22 +31,38 @@ namespace OPIDChecks.DAL
             if (firstCall)
             {
                 typoChecks = new List<Check>();
-                resolvedChecks = new List<Check>();
+                resolvedChecks = new List<CheckViewModel>();
                 mistakenlyResolved = new List<int>();
                 firstCall = false;
             }
 
-            unmatchedChecks = new List<Check>();
+            newResearchChecks = new List<Check>();
             incidentals = new List<int>();
         }
 
-        public static void PersistUnmatchedChecks(List<DispositionRow> researchRows)
+        public static IQueryable<CheckViewModel> GetResolvedChecksAsQueryable()
         {
-            List<Check> unmatchedChecks = DetermineUnmatchedChecks(researchRows);
-            AppendToUnresolvedChecks(unmatchedChecks);
+            if (resolvedChecks == null)
+            {
+                List<CheckViewModel> emptyList = new List<CheckViewModel>();
+                return emptyList.AsQueryable();
+            }
+
+            return resolvedChecks.AsQueryable();
         }
 
-        public static void NewUnmatchedCheck(DispositionRow row, string service, string disposition)
+        public static List<CheckViewModel> GetResolvedChecksAsList()
+        {
+            return resolvedChecks;
+        }
+
+        public static void PersistResearchChecks(List<DispositionRow> researchRows)
+        {
+            List<Check> rChecks = DetermineResearchChecks(researchRows);
+            AppendToResearchChecks(rChecks);
+        }
+
+        public static void NewResearchCheck(DispositionRow row, string service, string disposition)
         {
             int checkNum;
 
@@ -96,7 +112,7 @@ namespace OPIDChecks.DAL
                     break;
             }
 
-            unmatchedChecks.Add(new Check
+            newResearchChecks.Add(new Check
             {
                 RecordID = row.RecordID,
                 InterviewRecordID = row.InterviewRecordID,
@@ -108,86 +124,80 @@ namespace OPIDChecks.DAL
             });
         }
 
-        private static List<Check> DetermineUnmatchedChecks(List<DispositionRow> researchRows)
+        private static List<Check> DetermineResearchChecks(List<DispositionRow> researchRows)
         {
             foreach (DispositionRow row in researchRows)
             {
                 if (row.LBVDCheckNum != 0)
                 {
-                    NewUnmatchedCheck(row, "LBVD", row.LBVDCheckDisposition);
+                    NewResearchCheck(row, "LBVD", row.LBVDCheckDisposition);
                 }
 
                 if (row.LBVDCheckNum2 != 0)
                 {
-                    NewUnmatchedCheck(row, "LBVD2", row.LBVDCheck2Disposition);
+                    NewResearchCheck(row, "LBVD2", row.LBVDCheck2Disposition);
                 }
 
                 if (row.LBVDCheckNum3 != 0)
                 {
-                    NewUnmatchedCheck(row, "LBVD3", row.LBVDCheck3Disposition);
+                    NewResearchCheck(row, "LBVD3", row.LBVDCheck3Disposition);
                 }
 
                 if (row.TIDCheckNum != 0)
                 {
-                    if (!string.IsNullOrEmpty(row.TIDCheckDisposition))
-                    {
-                        int z;
-                        z = 2;
-                    }
-                    NewUnmatchedCheck(row, "TID", row.TIDCheckDisposition);
+                    NewResearchCheck(row, "TID", row.TIDCheckDisposition);
                 }
 
                 if (row.TIDCheckNum2 != 0)
                 {
-                    NewUnmatchedCheck(row, "TID2", row.TIDCheck2Disposition);
+                    NewResearchCheck(row, "TID2", row.TIDCheck2Disposition);
                 }
 
                 if (row.TIDCheckNum3 != 0)
                 {
-                    NewUnmatchedCheck(row, "TID3", row.TIDCheck3Disposition);
+                    NewResearchCheck(row, "TID3", row.TIDCheck3Disposition);
                 }
 
                 if (row.TDLCheckNum != 0)
                 {
-                    NewUnmatchedCheck(row, "TDL", row.TDLCheckDisposition);
+                    NewResearchCheck(row, "TDL", row.TDLCheckDisposition);
                 }
 
                 if (row.TDLCheckNum2 != 0)
                 {
-                    NewUnmatchedCheck(row, "TDL2", row.TDLCheck2Disposition);
+                    NewResearchCheck(row, "TDL2", row.TDLCheck2Disposition);
                 }
 
                 if (row.TDLCheckNum3 != 0)
                 {
-                    NewUnmatchedCheck(row, "TDL3", row.TDLCheck3Disposition);
+                    NewResearchCheck(row, "TDL3", row.TDLCheck3Disposition);
                 }
 
                 if (row.MBVDCheckNum != 0)
                 {
-                    NewUnmatchedCheck(row, "MBVD", row.MBVDCheckDisposition);
+                    NewResearchCheck(row, "MBVD", row.MBVDCheckDisposition);
                 }
 
                 if (row.MBVDCheckNum2 != 0)
                 {
-                    NewUnmatchedCheck(row, "MBVD2", row.MBVDCheck2Disposition);
+                    NewResearchCheck(row, "MBVD2", row.MBVDCheck2Disposition);
                 }
 
                 if (row.MBVDCheckNum3 != 0)
                 {
-                    NewUnmatchedCheck(row, "MBVD3", row.MBVDCheck3Disposition);
+                    NewResearchCheck(row, "MBVD3", row.MBVDCheck3Disposition);
                 }
 
                 if (row.SDCheckNum != 0)
                 {
-                    NewUnmatchedCheck(row, "SD", row.SDCheckDisposition);
+                    NewResearchCheck(row, "SD", row.SDCheckDisposition);
                 }
             }
 
-            return unmatchedChecks;
+            return newResearchChecks;
         }
-
-
-        private static void AppendToUnresolvedChecks(List<Check> checks)
+        
+        private static void AppendToResearchChecks(List<Check> checks)
         {
             try
             {
@@ -199,7 +209,7 @@ namespace OPIDChecks.DAL
 
                         if (existing == null) // && string.IsNullOrEmpty(check.Clr))
                         {
-                            RCheck unresolved = new RCheck
+                            RCheck rcheck = new RCheck
                             {
                                 RecordID = check.RecordID,
                                 sRecordID = check.RecordID.ToString(),
@@ -209,12 +219,13 @@ namespace OPIDChecks.DAL
                                 sNum = check.Num.ToString(),
                                 Name = check.Name,
                                 Date = check.Date,
+                                sDate = check.Date.ToString("MM/dd/yyyy"),
                                 Service = check.Service,
                                 Disposition = check.Disposition,
                                 Matched = false
                             };
 
-                            opidcontext.RChecks.Add(unresolved);
+                            opidcontext.RChecks.Add(rcheck);
                         }
                         else if (!string.IsNullOrEmpty(check.Disposition))
                         {
@@ -232,8 +243,6 @@ namespace OPIDChecks.DAL
             }
             catch (Exception e)
             {
-                int z;
-                z = 2;
             }
         }
 
@@ -264,6 +273,53 @@ namespace OPIDChecks.DAL
             }
         }
 
+        public static List<Check> GetResearchChecks()
+        {
+            List<Check> researchChecks = new List<Check>();
+
+            using (OpidDB opidcontext = new OpidDB())
+            {
+                List<RCheck> rchecks = opidcontext.RChecks.Select(u => u).ToList();
+
+                foreach (var lu in rchecks)
+                {
+                    researchChecks.Add(new Check
+                    {
+                        RecordID = lu.RecordID,
+                        InterviewRecordID = lu.InterviewRecordID,
+                        Num = lu.Num,
+                        Name = lu.Name,
+                        Date = lu.Date,
+                        Service = lu.Service,
+                        Disposition = lu.Disposition,
+                        Matched = lu.Matched
+                    });
+                }
+            }
+
+            return researchChecks;
+        }
+
+        public static void ResolveResearchChecks()
+        {
+            using (OpidDB opidcontext = new OpidDB())
+            {
+                var researchChecks = opidcontext.RChecks;
+
+                foreach (CheckViewModel check in resolvedChecks)
+                {
+                    List<RCheck> rchecks = researchChecks.Where(u => u.Num == check.Num || u.Num == -check.Num).ToList();
+
+                    foreach (RCheck rcheck in rchecks)
+                    {
+                        rcheck.Disposition = check.Disposition;
+                    }
+                }
+
+                opidcontext.SaveChanges();
+            }
+        }
+
         public static bool ResearchTableIsEmpty()
         {
             using (OpidDB opidcontext = new OpidDB())
@@ -279,39 +335,7 @@ namespace OPIDChecks.DAL
             return false;
         }
  
-        public static string GetResearchTableName()
-        {
-            string timestamp = Extras.GetTimestamp();
-            string fname = string.Format("Research {0}", timestamp);
-            return fname;
-        }  
-
-        public static string GetResearchTableCSV()
-        {
-            List<CheckViewModel> checks = DataManager.GetChecks();
-            var csv = new StringBuilder();
-
-            // N.B. No spaces between column names in the header row!
-            string header = "Date,Record ID,Interview Record ID,Name,Check Number,Service,Disposition";
-            csv.AppendLine(header);
-
-            foreach (CheckViewModel check in checks)
-            {
-                string csvrow = string.Format("{0},{1},{2},{3},{4},{5},{6}",
-                    check.Date,
-                    check.RecordID,
-                    check.InterviewRecordID,
-                    string.Format("\"{0}\"", check.Name),
-                    check.Num,
-                    check.Service,
-                    check.Disposition);
-
-                csv.AppendLine(csvrow);
-            }
-
-            return csv.ToString();
-        }
-
+               
         public static void RestoreResearchTable(string rtFileName)
         {
             string pathToResearchTableFile = System.Web.HttpContext.Current.Request.MapPath(string.Format("~/Uploads/{0}", rtFileName));
@@ -356,13 +380,59 @@ namespace OPIDChecks.DAL
 
         public static List<DispositionRow> GetResearchRows(string uploadedFile)
         {
-            // List<DispositionRow> originalRows = new List<DispositionRow>();
-            //  string pathToApricotReportFile = System.Web.HttpContext.Current.Request.MapPath(string.Format("~/App_Data/Public/{0}.{1}", apFileName, apFileType));
             string pathToResearchReportFile = System.Web.HttpContext.Current.Request.MapPath(string.Format("~/Uploads/{0}", uploadedFile));
-
             List<DispositionRow> resRows = MyExcelDataReader.GetResearchRows(pathToResearchReportFile);
-
             return resRows;
+        }
+
+        public static List<Check> GetVoidedChecks(string vcFileName)
+        {
+            if (vcFileName.Equals("unknown"))
+            {
+                // Return an emmpty list of checks.
+                return new List<Check>();
+            }
+                        
+            string pathToVoidedChecksFile = System.Web.HttpContext.Current.Request.MapPath(string.Format("~/Uploads/{0}", vcFileName));
+
+            List<Check> voidedChecks = MyExcelDataReader.GetVoidedChecks(pathToVoidedChecksFile);
+
+            foreach (Check check in voidedChecks)
+            {
+                // Implicit status of voided checks is "Voided"
+                check.Clr = "Voided";
+                check.Disposition = "Voided";
+            }
+
+            return voidedChecks;
+        }
+
+        public static void NewResolvedCheck(Check check, string disposition)
+        {
+            // PLB 1/23/2019 Added r.RecordID == check.RecordID.
+            // This fxed the problem that Bill reported in an email dated 1/21/2019.
+            CheckViewModel alreadyResolved = resolvedChecks.Where(r => (r.RecordID == check.RecordID && (r.Num == check.Num || r.Num == -check.Num))).FirstOrDefault();
+            CheckViewModel cvm = null;
+
+            if (alreadyResolved == null)
+            {
+                cvm = new CheckViewModel
+                {
+                    RecordID = check.RecordID,
+                    sRecordID = check.RecordID.ToString(),
+                    InterviewRecordID = check.InterviewRecordID,
+                    sInterviewRecordID = check.InterviewRecordID.ToString(),
+                    Name = check.Name,
+                    Num = check.Num,
+                    sNum = check.Num.ToString(),
+                    Date = check.Date,
+                    sDate = check.Date.ToString("MM/dd/yyyy"),
+                    Service = check.Service,
+                    Disposition = disposition
+                };
+
+                resolvedChecks.Add(cvm);
+            }
         }
     }
 }

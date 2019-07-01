@@ -210,6 +210,7 @@
     <Compile Include="Config.cs" />
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\AdminController.cs" />
+    <Compile Include="Controllers\FileDownloadController.cs" />
     <Compile Include="Controllers\FileUploadController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\ManageController.cs" />
@@ -257,6 +258,7 @@
     <Compile Include="Models\DispositionRow.cs" />
     <Compile Include="Models\FileViewModel.cs" />
     <Compile Include="Models\IdentityModels.cs" />
+    <Compile Include="Models\ImportRow.cs" />
     <Compile Include="Models\InvitationViewModel.cs" />
     <Compile Include="Models\ManageViewModels.cs" />
     <Compile Include="Models\CheckViewModel.cs" />
@@ -506,6 +508,7 @@
     <Content Include="Content\DataTables\css\semanticui.scss" />
     <Content Include="Content\DataTables\css\mixins.scss" />
     <Content Include="Content\DataTables\css\common.scss" />
+    <Content Include="App_Data\Interview Import Me Header.csv" />
     <None Include="Scripts\jquery-3.3.1.intellisense.js" />
     <Content Include="Scripts\DataTables\autoFill.bootstrap.js" />
     <Content Include="Scripts\DataTables\autoFill.bootstrap.min.js" />
@@ -686,9 +689,9 @@
     <Content Include="Views\Admin\ResearchTable.cshtml" />
     <Content Include="Views\ResearchTable\ResearchTable.cshtml" />
     <Content Include="Views\Merge\Merge.cshtml" />
+    <Content Include="Views\Admin\Resolved.cshtml" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="App_Data\" />
     <Folder Include="Views\FileDownload\" />
     <Folder Include="Views\FileUpload\" />
     <Folder Include="Views\Home\" />

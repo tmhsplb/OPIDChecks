@@ -75,5 +75,95 @@ namespace OPIDChecks.Utils
                 return null;
             }
         }
+
+        private static DateTime GetDateValue(System.Data.DataRow row)
+        {
+            string dvalue;
+            DateTime rdate = (DateTime)row["Date"];
+
+            //  if (DBNull.Value.Equals(row["Date of Check"]))  //if (DBNull.Value.Equals(row["Date"]))
+
+            if (DBNull.Value.Equals(row["Date"]))  // For File1 and File2 read on Mach 30, 2018 
+            {
+                // This is a blank row. Provide a dummy value.
+                dvalue = "12/12/1900";
+            }
+            else
+            {
+                //   dvalue = row["Date of Check"].ToString();  //dvalue = row["Date"].ToString();
+                dvalue = row["Date"].ToString();  // For File1 and File2 read on March 30, 2018
+            }
+
+            DateTime dtime = DateTime.Now;
+
+            try
+            {
+                dtime = Convert.ToDateTime(dvalue);
+            }
+            catch (Exception e)
+            {
+                throw new Exception("Bad date value");
+            }
+
+            return dtime;
+        }
+
+        private static int GetCheckNum(System.Data.DataRow row)
+        {
+            string cvalue;
+
+            //if (DBNull.Value.Equals(row["Check Number"]))  // if (DBNull.Value.Equals(row["Num"]))
+            if (DBNull.Value.Equals(row["Num"]))  // For File1 and FIle2 read on March 30, 2018
+            {
+                // This is a blank row. Provide a dummy value.
+                cvalue = "0";
+            }
+            else
+            {
+                // cvalue = row["Check Number"].ToString();  // cvalue = row["Num"].ToString();
+                cvalue = row["Num"].ToString();  // For FIle1 and File2 read on March 30, 2018
+                if (cvalue.Equals("EFT") || cvalue.Equals("Debit"))  // PLB 10/12/2017. Bill's file may have EFT or Debit in Num field. Treat as blank line.
+                {
+                    cvalue = "0";
+                }
+            }
+
+            int cnum = 0;
+
+            try
+            {
+                cnum = Convert.ToInt32(cvalue);
+            }
+            catch (Exception e)
+            {
+                throw new Exception("Bad number value");
+            }
+
+            return cnum;
+        }
+
+        public static List<Check> GetVoidedChecks(string filePath)
+        {
+            List<Check> rowChecks = new ExcelData(filePath).GetData().Select(dataRow =>
+                new Check
+                {
+                    Date = GetDateValue(dataRow),  // PLB 10/12/2017 Used when clicking on Inspect tab.
+                    Num = GetCheckNum(dataRow),
+                    Memo = "Voided check" //GetMemo(dataRow),
+                }).ToList();
+
+            List<Check> voidedChecks = new List<Check>();
+
+            // Remove checks corresponding to blank rows in Excel file.
+            foreach (Check check in rowChecks)
+            {
+                if (check.Num != 0)  // if (!check.Memo.Equals("NoCheck"))
+                {
+                    voidedChecks.Add(check);
+                }
+            }
+
+            return voidedChecks;
+        }
     }
 }
