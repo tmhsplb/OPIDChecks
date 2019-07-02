@@ -385,6 +385,7 @@ namespace OPIDChecks.DAL
             return resRows;
         }
 
+        /*
         public static List<Check> GetVoidedChecks(string vcFileName)
         {
             if (vcFileName.Equals("unknown"))
@@ -400,12 +401,58 @@ namespace OPIDChecks.DAL
             foreach (Check check in voidedChecks)
             {
                 // Implicit status of voided checks is "Voided"
-                check.Clr = "Voided";
+               // check.Clr = "Voided";
                 check.Disposition = "Voided";
             }
 
             return voidedChecks;
         }
+
+        public static List<Check> GetClearedChecks(string ccFileName)
+        {
+            if (ccFileName.Equals("unknown"))
+            {
+                // Return an emmpty list of checks.
+                return new List<Check>();
+            }
+
+            string pathToClearedChecksFile = System.Web.HttpContext.Current.Request.MapPath(string.Format("~/Uploads/{0}", ccFileName));
+
+            List<Check> clearedChecks = MyExcelDataReader.GetClearedChecks(pathToClearedChecksFile);
+
+            foreach (Check check in clearedChecks)
+            {
+                // Implicit status of voided checks is "Voided"
+                // check.Clr = "Voided";
+                check.Disposition = "Cleared";
+            }
+
+            return clearedChecks;
+        }
+        */
+
+        public static List<Check> GetExcelChecks(string uploadedFileName, string disposition)
+        {
+            if (uploadedFileName.Equals("unknown"))
+            {
+                // Return an emmpty list of checks.
+                return new List<Check>();
+            }
+
+            string pathToUploadedChecksFile = System.Web.HttpContext.Current.Request.MapPath(string.Format("~/Uploads/{0}", uploadedFileName));
+
+            List<Check> excelChecks = MyExcelDataReader.GetExcelChecks(pathToUploadedChecksFile);
+
+            foreach (Check check in excelChecks)
+            {
+                // Implicit status of voided checks is "Voided"
+                // check.Clr = "Voided";
+                check.Disposition = disposition;
+            }
+
+            return excelChecks;
+        }
+
 
         public static void NewResolvedCheck(Check check, string disposition)
         {

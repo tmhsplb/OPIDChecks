@@ -90,6 +90,7 @@ namespace OPIDChecks.Controllers
 
                 List<string> docfiles = FileUploader.UploadFile(postedFile);
                 TempData["UploadedFile"] = fname;
+                TempData["FileType"] = "ClearedChecks";
                 ViewData["UploadedCCFile"] = string.Format("Uploaded File: {0}", fname);
 
                 return View("Merge", model);

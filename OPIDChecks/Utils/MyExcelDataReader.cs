@@ -142,6 +142,7 @@ namespace OPIDChecks.Utils
             return cnum;
         }
 
+        /*
         public static List<Check> GetVoidedChecks(string filePath)
         {
             List<Check> rowChecks = new ExcelData(filePath).GetData().Select(dataRow =>
@@ -164,6 +165,54 @@ namespace OPIDChecks.Utils
             }
 
             return voidedChecks;
+        }
+
+        public static List<Check> GetClearedChecks(string filePath)
+        {
+            List<Check> rowChecks = new ExcelData(filePath).GetData().Select(dataRow =>
+                new Check
+                {
+                    Date = GetDateValue(dataRow),  // PLB 10/12/2017 Used when clicking on Inspect tab.
+                    Num = GetCheckNum(dataRow),
+                    Memo = "Cleared check" //GetMemo(dataRow),
+                }).ToList();
+
+            List<Check> clearedChecks = new List<Check>();
+
+            // Remove checks corresponding to blank rows in Excel file.
+            foreach (Check check in rowChecks)
+            {
+                if (check.Num != 0)  // if (!check.Memo.Equals("NoCheck"))
+                {
+                    clearedChecks.Add(check);
+                }
+            }
+
+            return clearedChecks;
+        }
+        */
+
+        public static List<Check> GetExcelChecks(string filePath)
+        {
+            List<Check> rowChecks = new ExcelData(filePath).GetData().Select(dataRow =>
+                new Check
+                {
+                    Date = GetDateValue(dataRow),  // PLB 10/12/2017 Used when clicking on Inspect tab.
+                    Num = GetCheckNum(dataRow),
+                }).ToList();
+
+            List<Check> excelChecks = new List<Check>();
+
+            // Remove checks corresponding to blank rows in Excel file.
+            foreach (Check check in rowChecks)
+            {
+                if (check.Num != 0)  // if (!check.Memo.Equals("NoCheck"))
+                {
+                    excelChecks.Add(check);
+                }
+            }
+
+            return excelChecks;
         }
     }
 }
