@@ -17,8 +17,14 @@ namespace OPIDChecks.DAL
                     break;
 
                 case "VoidedChecks":
-                    UpdateResearchTableFromVoidedChecksFile(uploadedFile);
-                   
+                    //UpdateResearchTableFromVoidedChecksFile(uploadedFile);
+                    UpdateResearchTableFromExcelChecksFile(uploadedFile, "Voided");
+
+                    break;
+
+                case "ClearedChecks":
+                   // UpdateResearchTableFromClearedChecksFile(uploadedFile);
+                    UpdateResearchTableFromExcelChecksFile(uploadedFile, "Cleared");
                     break;
 
                 default:
@@ -40,7 +46,7 @@ namespace OPIDChecks.DAL
                 || disposition.Equals("Scammed Check");
         }
 
-        private static void DetermineResolvedChecks(List<Check> checks, string type, List<Check> researchChecks)
+        private static void DetermineResolvedChecks(List<Check> checks, string disposition, List<Check> researchChecks)
         {
             foreach (Check check in checks)
             {
@@ -58,7 +64,7 @@ namespace OPIDChecks.DAL
                     {
                         bool protectedCheck = IsProtectedCheck(matchedCheck.Disposition);
 
-                        string disposition = (type.Equals("ImportMe") ? check.Disposition : type);
+                       // string disposition = (type.Equals("ImportMe") ? check.Disposition : type);
 
                         if (!protectedCheck)
                         {
@@ -111,6 +117,7 @@ namespace OPIDChecks.DAL
             // DataManager.RemoveTypoChecks();
         }
 
+        /*
         public static void UpdateResearchTableFromVoidedChecksFile(string uploadedFile)
         {
             DataManager.Init();
@@ -118,6 +125,28 @@ namespace OPIDChecks.DAL
             List<Check> researchChecks = DataManager.GetResearchChecks();
 
             DetermineResolvedChecks(voidedChecks, "Voided", researchChecks);
+            DataManager.ResolveResearchChecks();
+        }
+
+        public static void UpdateResearchTableFromClearedChecksFile(string uploadedFile)
+        {
+            DataManager.Init();
+            List<Check> clearedChecks = DataManager.GetClearedChecks(uploadedFile);
+            List<Check> researchChecks = DataManager.GetResearchChecks();
+
+            DetermineResolvedChecks(clearedChecks, "Cleared", researchChecks);
+            DataManager.ResolveResearchChecks();
+        }
+        */
+
+        public static void UpdateResearchTableFromExcelChecksFile(string uploadedFile, string disposition)
+        {
+            DataManager.Init();
+            
+            List<Check> excelChecks = DataManager.GetExcelChecks(uploadedFile, disposition);
+            List<Check> researchChecks = DataManager.GetResearchChecks();
+
+            DetermineResolvedChecks(excelChecks, disposition, researchChecks);
             DataManager.ResolveResearchChecks();
         }
     }
