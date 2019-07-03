@@ -14,7 +14,7 @@ namespace OPIDChecks.Controllers
         // GET: Merge
         public ActionResult Merge()
         {
-            TempData["UploadedFile"] = "none";
+            TempData["UploadedFile"] = "";
             ViewData["MergeStatus"] = "Wait for the Merge Complete message after clicking the Merge button";
             return View();
         }
@@ -100,83 +100,7 @@ namespace OPIDChecks.Controllers
             return View("Merge", model);
         }
 
-        [HttpPost]
-        public ActionResult UploadReResolvedChecksFile(FileViewModel model)
-        {
-            if (ModelState.IsValid)
-            {
-                var postedFile = Request.Files["File"];
-
-                string fname = postedFile.FileName;
-
-                if (!fname.EndsWith("xlsx"))
-                {
-                    ModelState.AddModelError("ReresolvedChecksError", "This is not an Excel xlsx file.");
-                    return View("Merge", model);
-                }
-
-                List<string> docfiles = FileUploader.UploadFile(postedFile);
-                TempData["UploadedFile"] = fname;
-                ViewData["UploadedRRCFile"] = string.Format("Uploaded File: {0}", fname);
-
-                return View("Merge", model);
-            }
-
-            ModelState.AddModelError("ReresolvedChecksError", "Please supply a file name.");
-            return View("Merge", model);
-        }
-
-        [HttpPost]
-        public ActionResult UploadReresolvedVoidedChecksFile(FileViewModel model)
-        {
-            if (ModelState.IsValid)
-            {
-                var postedFile = Request.Files["File"];
-
-                string fname = postedFile.FileName;
-
-                if (!fname.EndsWith("xlsx"))
-                {
-                    ModelState.AddModelError("RRVoidedChecksError", "This is not an Excel xlsx file.");
-                    return View("Merge", model);
-                }
-
-                List<string> docfiles = FileUploader.UploadFile(postedFile);
-                TempData["UploadedFile"] = fname;
-                ViewData["UploadedRRVCFile"] = string.Format("Uploaded File: {0}", fname);
-
-                return View("Merge", model);
-            }
-
-            ModelState.AddModelError("VoidedChecksError", "Please supply a file name.");
-            return View("Merge", model);
-        }
-
-        [HttpPost]
-        public ActionResult UploadReresolvedClearedChecksFile(FileViewModel model)
-        {
-            if (ModelState.IsValid)
-            {
-                var postedFile = Request.Files["File"];
-
-                string fname = postedFile.FileName;
-
-                if (!fname.EndsWith("xlsx"))
-                {
-                    ModelState.AddModelError("RRClearedChecksError", "This is not an Excel xlsx file.");
-                    return View("Merge", model);
-                }
-
-                List<string> docfiles = FileUploader.UploadFile(postedFile);
-                TempData["UploadedFile"] = fname;
-                ViewData["UploadedRRCFile"] = string.Format("Uploaded File: {0}", fname);
-
-                return View("Merge", model);
-            }
-
-            ModelState.AddModelError("RRClearedChecksError", "Please supply a file name.");
-            return View("Merge", model);
-        }
+        
 
         [HttpPost]
         public ActionResult PerformMerge()

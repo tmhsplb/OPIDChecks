@@ -690,6 +690,7 @@
     <Content Include="Views\ResearchTable\ResearchTable.cshtml" />
     <Content Include="Views\Merge\Merge.cshtml" />
     <Content Include="Views\Admin\Resolved.cshtml" />
+    <Content Include="Views\Superadmin\MistakenlyResolved.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Views\FileDownload\" />
