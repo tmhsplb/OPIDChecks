@@ -247,6 +247,10 @@
     <Compile Include="DataContexts\OPIDMigrations\201906281259320_StringifyDate.Designer.cs">
       <DependentUpon>201906281259320_StringifyDate.cs</DependentUpon>
     </Compile>
+    <Compile Include="DataContexts\OPIDMigrations\201907061846381_Matched.cs" />
+    <Compile Include="DataContexts\OPIDMigrations\201907061846381_Matched.Designer.cs">
+      <DependentUpon>201907061846381_Matched.cs</DependentUpon>
+    </Compile>
     <Compile Include="DataContexts\OPIDMigrations\Configuration.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
@@ -731,6 +735,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="DataContexts\OPIDMigrations\201906281259320_StringifyDate.resx">
       <DependentUpon>201906281259320_StringifyDate.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="DataContexts\OPIDMigrations\201907061846381_Matched.resx">
+      <DependentUpon>201907061846381_Matched.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>
