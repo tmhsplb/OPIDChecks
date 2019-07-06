@@ -5,7 +5,7 @@
     Layout = "~/Views/Shared/_Superadmin.cshtml";
 }
 
-<br/><br/><br/>
+<br /><br /><br />
 
 <div class="row">
     <div class="col-md-12">
@@ -22,7 +22,7 @@
 
 @section Scripts
 {
-  <script type="text/javascript">
+    <script type="text/javascript">
         var checksListVM;
         $(function () {
             checksListVM = {
@@ -52,72 +52,86 @@
             // initialize the datatables
             checksListVM.init();
         });
-  </script>
+    </script>
 }
 
 
-    
-    <br /><br /><br />
+
+<br /><br /><br />
 
 
-    <form id="backupForm">
-        <h4>Backup Research Table</h4>
-        <hr />
-        <div class="form-group">
-            <div class="col-md-offset-2 col-md-10">
-                <button class="btn btn-default" type="submit">Download Research Table Backup File</button>
-            </div>
+<form id="backupForm">
+    <h4>Backup Research Table</h4>
+    <hr />
+    <div class="form-group">
+        <div class="col-md-offset-2 col-md-10">
+            <button class="btn btn-default" type="submit">Download Research Table Backup File</button>
         </div>
-    </form>
+    </div>
+</form>
 
-    <script type="text/javascript">
-        /* https://stackoverflow.com/questions/11534690/how-to-do-a-jquery-callback-after-form-submit */
-        /* https://www.airpair.com/js/jquery-ajax-post-tutorial */
-        $("#backupForm").submit(function () {
-            $.ajax({
-                url: "/OPIDChecks/FileDownload/GetResearchTable",
-                dataType: 'json',
-                type: "POST",
-                contentType: 'application/x-www-form-urlencoded',
-                data: $(this).serialize(),
-                success: function (data, textStatus, jQxhr) {
-                    // alert("Inside backupForm callback: data.rtfileName = " + data.rtFileName);
-                    var textFileAsBlob = new Blob([data.content], { type: 'text/plain' });
+<script type="text/javascript">
+    /* https://stackoverflow.com/questions/11534690/how-to-do-a-jquery-callback-after-form-submit */
+    /* https://www.airpair.com/js/jquery-ajax-post-tutorial */
+    $("#backupForm").submit(function () {
+        $.ajax({
+            url: "/OPIDChecks/FileDownload/GetResearchTable",
+            dataType: 'json',
+            type: "POST",
+            contentType: 'application/x-www-form-urlencoded',
+            data: $(this).serialize(),
+            success: function (data, textStatus, jQxhr) {
+                // alert("Inside backupForm callback: data.rtfileName = " + data.rtFileName);
+                var textFileAsBlob = new Blob([data.content], { type: 'text/plain' });
 
-                    var downloadLink = document.createElement("a");
-                    downloadLink.download = data.rtFileName + ".csv";
+                var downloadLink = document.createElement("a");
+                downloadLink.download = data.rtFileName + ".csv";
 
-                    downloadLink.innerHtml = "Download Research Table";
-                    downloadLink.href = window.webkitURL.createObjectURL(textFileAsBlob);
-                    downloadLink.click();
-                },
-                error: function (jqXhr, textStatus, errorThrown) {
-                    alert("error thrown: " + errorThrown);
-                }
-            })
+                downloadLink.innerHtml = "Download Research Table";
+                downloadLink.href = window.webkitURL.createObjectURL(textFileAsBlob);
+                downloadLink.click();
+            },
+            error: function (jqXhr, textStatus, errorThrown) {
+                alert("error thrown: " + errorThrown);
+            }
         })
-    </script>
+    })
+</script>
 
-    <br /><br /><br /><br />
+<br /><br /><br /><br />
 
-    @using (Html.BeginForm("Restore", "ResearchTable", FormMethod.Post, new { enctype = "multipart/form-data", @class = "form-horizontal", role = "form" }))
-    {
-        // Idea for
-        //   TextxboxFor(m => m.File, new { type = "file"})
-        // comes from https://stackoverflow.com/questions/304617/html-helper-for-input-type-file
-        @Html.AntiForgeryToken()
-        <h4>Restore from backup.</h4>
-        <hr />
-        @Html.ValidationSummary("", new { @class = "text-danger" })
-        <div class="form-group">
-            <div class="col-md-10">
-                @Html.TextBoxFor(m => m.File, new { type = "file" })
-            </div>
+@using (Html.BeginForm("DeleteResearchTable", "ResearchTable", FormMethod.Post, new { enctype = "multipart/form-data", @class = "form-horizontal", role = "form" }))
+{
+    @Html.AntiForgeryToken()
+    <h4>Delete Research Table.</h4>
+    <hr />
+    <div class="form-group">
+        <div class="col-md-offset-2 col-md-10">
+            <input type="submit" class="btn btn-default" value="Delete Research Table" />
         </div>
-        <div class="form-group">
-            <div class="col-md-offset-2 col-md-10">
-                <input type="submit" class="btn btn-default" value="Restore from backup" />
-            </div>
+    </div>
+}
+
+<br /><br /><br /><br />
+
+@using (Html.BeginForm("Restore", "ResearchTable", FormMethod.Post, new { enctype = "multipart/form-data", @class = "form-horizontal", role = "form" }))
+{
+    // Idea for
+    //   TextxboxFor(m => m.File, new { type = "file"})
+    // comes from https://stackoverflow.com/questions/304617/html-helper-for-input-type-file
+    @Html.AntiForgeryToken()
+    <h4>Restore from backup.</h4>
+    <hr />
+    @Html.ValidationSummary("", new { @class = "text-danger" })
+    <div class="form-group">
+        <div class="col-md-10">
+            @Html.TextBoxFor(m => m.File, new { type = "file" })
         </div>
-    }
+    </div>
+    <div class="form-group">
+        <div class="col-md-offset-2 col-md-10">
+            <input type="submit" class="btn btn-default" value="Restore from backup" />
+        </div>
+    </div>
+}
 
