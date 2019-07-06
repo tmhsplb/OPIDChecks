@@ -73,6 +73,13 @@ namespace OPIDChecks.Controllers
         }
 
         [HttpPost]
+        public ActionResult DeleteResearchTable()
+        {
+            DataManager.DeleteResearchTable();
+            return View("ResearchTable");
+        }
+
+        [HttpPost]
         public ActionResult Restore(FileViewModel model)
         {
             if (!DataManager.ResearchTableIsEmpty())

@@ -332,6 +332,16 @@ namespace OPIDChecks.DAL
 
             return false;
         }
+
+        public static void DeleteResearchTable()
+        {
+            using (OpidDB opidcontext = new OpidDB())
+            {
+                opidcontext.RChecks.RemoveRange(opidcontext.RChecks);  // Remove all checks from table RChecks (the Research Table)
+                opidcontext.SaveChanges();
+                return;
+            }
+        }
  
                
         public static void RestoreResearchTable(string rtFileName)
