@@ -222,7 +222,6 @@ namespace OPIDChecks.DAL
                                 sDate = check.Date.ToString("MM/dd/yyyy"),
                                 Service = check.Service,
                                 Disposition = check.Disposition,
-                                Matched = false
                             };
 
                             opidcontext.RChecks.Add(rcheck);
@@ -292,7 +291,6 @@ namespace OPIDChecks.DAL
                         Date = lu.Date,
                         Service = lu.Service,
                         Disposition = lu.Disposition,
-                        Matched = lu.Matched
                     });
                 }
             }
@@ -384,52 +382,7 @@ namespace OPIDChecks.DAL
             List<DispositionRow> resRows = MyExcelDataReader.GetResearchRows(pathToResearchReportFile);
             return resRows;
         }
-
-        /*
-        public static List<Check> GetVoidedChecks(string vcFileName)
-        {
-            if (vcFileName.Equals("unknown"))
-            {
-                // Return an emmpty list of checks.
-                return new List<Check>();
-            }
-                        
-            string pathToVoidedChecksFile = System.Web.HttpContext.Current.Request.MapPath(string.Format("~/Uploads/{0}", vcFileName));
-
-            List<Check> voidedChecks = MyExcelDataReader.GetVoidedChecks(pathToVoidedChecksFile);
-
-            foreach (Check check in voidedChecks)
-            {
-                // Implicit status of voided checks is "Voided"
-               // check.Clr = "Voided";
-                check.Disposition = "Voided";
-            }
-
-            return voidedChecks;
-        }
-
-        public static List<Check> GetClearedChecks(string ccFileName)
-        {
-            if (ccFileName.Equals("unknown"))
-            {
-                // Return an emmpty list of checks.
-                return new List<Check>();
-            }
-
-            string pathToClearedChecksFile = System.Web.HttpContext.Current.Request.MapPath(string.Format("~/Uploads/{0}", ccFileName));
-
-            List<Check> clearedChecks = MyExcelDataReader.GetClearedChecks(pathToClearedChecksFile);
-
-            foreach (Check check in clearedChecks)
-            {
-                // Implicit status of voided checks is "Voided"
-                // check.Clr = "Voided";
-                check.Disposition = "Cleared";
-            }
-
-            return clearedChecks;
-        }
-        */
+ 
 
         public static List<Check> GetExcelChecks(string uploadedFileName, string disposition)
         {
@@ -452,7 +405,6 @@ namespace OPIDChecks.DAL
 
             return excelChecks;
         }
-
 
         public static void NewResolvedCheck(Check check, string disposition)
         {

@@ -18,6 +18,5 @@ namespace OPIDEntities
         public string sDate { get; set; }
         public string Service { get; set; }
         public string Disposition { get; set; }
-        public bool Matched { get; set; }
     }
 }
