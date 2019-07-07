@@ -17,14 +17,24 @@ namespace OPIDChecks.DAL
                     break;
 
                 case "VoidedChecks":
-                    //UpdateResearchTableFromVoidedChecksFile(uploadedFile);
                     UpdateResearchTableFromExcelChecksFile(uploadedFile, "Voided");
 
                     break;
 
                 case "ClearedChecks":
-                   // UpdateResearchTableFromClearedChecksFile(uploadedFile);
                     UpdateResearchTableFromExcelChecksFile(uploadedFile, "Cleared");
+                    break;
+
+                case "ReresolvedChecks":
+                    ProcessMistakenlyResolvedChecks(uploadedFile);
+                    break;
+
+                case "ReresolvedVoidedChecks":
+                    ReResolveResearchChecks(uploadedFile, "Voided");
+                    break;
+
+                case "ReresolvedClearedChecks":
+                    ReResolveResearchChecks(uploadedFile, "Cleared");
                     break;
 
                 default:
@@ -117,28 +127,6 @@ namespace OPIDChecks.DAL
             // DataManager.RemoveTypoChecks();
         }
 
-        /*
-        public static void UpdateResearchTableFromVoidedChecksFile(string uploadedFile)
-        {
-            DataManager.Init();
-            List<Check> voidedChecks = DataManager.GetVoidedChecks(uploadedFile);
-            List<Check> researchChecks = DataManager.GetResearchChecks();
-
-            DetermineResolvedChecks(voidedChecks, "Voided", researchChecks);
-            DataManager.ResolveResearchChecks();
-        }
-
-        public static void UpdateResearchTableFromClearedChecksFile(string uploadedFile)
-        {
-            DataManager.Init();
-            List<Check> clearedChecks = DataManager.GetClearedChecks(uploadedFile);
-            List<Check> researchChecks = DataManager.GetResearchChecks();
-
-            DetermineResolvedChecks(clearedChecks, "Cleared", researchChecks);
-            DataManager.ResolveResearchChecks();
-        }
-        */
-
         public static void UpdateResearchTableFromExcelChecksFile(string uploadedFile, string disposition)
         {
             DataManager.Init();
@@ -148,6 +136,67 @@ namespace OPIDChecks.DAL
 
             DetermineResolvedChecks(excelChecks, disposition, researchChecks);
             DataManager.ResolveResearchChecks();
+        }
+
+        private static void ProcessMistakenlyResolvedChecks(string uploadedFile)
+        {
+            List<Check> mistakenlyResolved = DataManager.GetExcelChecks(uploadedFile, "DontCare");
+            DataManager.MarkMistakenlyResolvedChecks(mistakenlyResolved);
+        }
+
+        private static void ReResolveResearchChecks(string uploadedFile, string disposition)
+        {
+            DataManager.Init();
+
+            List<Check> researchChecks = DataManager.GetResearchChecks();
+            List<Check> excelChecks = DataManager.GetExcelChecks(uploadedFile, disposition);
+            
+
+            DetermineReResolvedChecks(excelChecks, disposition, researchChecks);
+         
+            // Remove the set of resolved checks determined above from the Research Table. 
+           // DataManager.RemoveReResolvedChecks();
+        }
+
+        private static void DetermineReResolvedChecks(List<Check> checks, string type, List<Check> researchChecks)
+        {
+            foreach (Check check in checks)
+            {
+                List<Check> matchedChecks = researchChecks.FindAll(c => c.Num == check.Num);
+
+                // Normally, matchedChecks.Count() == 0 or matchedChecks.Count == 1 
+                // But in the case of a birth certificate, a single check number may cover
+                // multiple children. In this case matchedChecks.Count() > 1.
+                // The foreach loop below creates a new resolved check for each matched check.
+                // This means that if one check number is used by a parent and his/her children,
+                // then there will be a resolved check for the parent and each child.
+                if (matchedChecks.Count() != 0)
+                {
+                    foreach (Check matchedCheck in matchedChecks)
+                    {
+                        bool newMistakenlyResolved = DataManager.IsNewMistakenlyResolved(matchedCheck);
+                        bool protectedCheck = IsProtectedCheck(matchedCheck.Disposition);
+
+                        if (!protectedCheck)
+                        {
+                            if (newMistakenlyResolved)
+                            {
+                                // This will "unset" the radio button from Cleared, Voided, etc. to no setting at all.
+                                DataManager.NewResolvedCheck(matchedCheck, "");
+                            }
+                            else if (!IsMistakenlyResolved(matchedCheck))
+                            {
+                                DataManager.NewResolvedCheck(matchedCheck, type);
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        private static bool IsMistakenlyResolved(Check check)
+        {
+            return check.Disposition.Equals("Mistakenly Resolved");
         }
     }
 }
