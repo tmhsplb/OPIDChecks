@@ -105,9 +105,10 @@ namespace OPIDChecks.Controllers
 
                 List<string> docfiles = FileUploader.UploadFile(postedFile);
                 TempData["UploadedFile"] = fname;
+                TempData["FileType"] = "ReresolvedChecks";
                 ViewData["UploadedRRCFile"] = string.Format("Uploaded File: {0}", fname);
 
-                return View("Merge", model);
+                return View("MistakenlyResolved", model);
             }
 
             ModelState.AddModelError("ReresolvedChecksError", "Please supply a file name.");
@@ -126,14 +127,15 @@ namespace OPIDChecks.Controllers
                 if (!fname.EndsWith("xlsx"))
                 {
                     ModelState.AddModelError("RRVoidedChecksError", "This is not an Excel xlsx file.");
-                    return View("Merge", model);
+                    return View("MistakenlyResolved", model);
                 }
 
                 List<string> docfiles = FileUploader.UploadFile(postedFile);
                 TempData["UploadedFile"] = fname;
+                TempData["FileType"] = "ReresolvedVoidedChecks";
                 ViewData["UploadedRRVCFile"] = string.Format("Uploaded File: {0}", fname);
 
-                return View("Merge", model);
+                return View("MistakenlyResolved", model);
             }
 
             ModelState.AddModelError("VoidedChecksError", "Please supply a file name.");
@@ -152,18 +154,19 @@ namespace OPIDChecks.Controllers
                 if (!fname.EndsWith("xlsx"))
                 {
                     ModelState.AddModelError("RRClearedChecksError", "This is not an Excel xlsx file.");
-                    return View("Merge", model);
+                    return View("MistakenlyResolved", model);
                 }
 
                 List<string> docfiles = FileUploader.UploadFile(postedFile);
                 TempData["UploadedFile"] = fname;
-                ViewData["UploadedRRCFile"] = string.Format("Uploaded File: {0}", fname);
+                TempData["FileType"] = "ReresolvedCleardChecks";
+                ViewData["UploadedRRCCFile"] = string.Format("Uploaded File: {0}", fname);
 
-                return View("Merge", model);
+                return View("MistakenlyResolved", model);
             }
 
             ModelState.AddModelError("RRClearedChecksError", "Please supply a file name.");
-            return View("Merge", model);
+            return View("MistakenlyResolved", model);
         }
 
         [HttpPost]

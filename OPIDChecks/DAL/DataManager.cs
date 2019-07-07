@@ -386,9 +386,9 @@ namespace OPIDChecks.DAL
             }
         }
 
-        public static List<DispositionRow> GetResearchRows(string uploadedFile)
+        public static List<DispositionRow> GetResearchRows(string uploadedFileName)
         {
-            string pathToResearchReportFile = System.Web.HttpContext.Current.Request.MapPath(string.Format("~/Uploads/{0}", uploadedFile));
+            string pathToResearchReportFile = System.Web.HttpContext.Current.Request.MapPath(string.Format("~/Uploads/{0}", uploadedFileName));
             List<DispositionRow> resRows = MyExcelDataReader.GetResearchRows(pathToResearchReportFile);
             return resRows;
         }
@@ -409,7 +409,6 @@ namespace OPIDChecks.DAL
             foreach (Check check in excelChecks)
             {
                 // Implicit status of voided checks is "Voided"
-                // check.Clr = "Voided";
                 check.Disposition = disposition;
             }
 
@@ -443,5 +442,38 @@ namespace OPIDChecks.DAL
                 resolvedChecks.Add(cvm);
             }
         }
+
+        public static void MarkMistakenlyResolvedChecks(List<Check> mistakenlyResolved)
+        {
+            using (OpidDB opidcontext = new OpidDB())
+            {
+                foreach (Check mr in mistakenlyResolved)
+                {
+                    List<RCheck> rchecks = opidcontext.RChecks.Where(u => u.Num == mr.Num).ToList();
+
+                    foreach (RCheck rcheck in rchecks)
+                    {
+                        rcheck.Disposition = "Mistakenly Resolved";
+                    }
+                }
+
+                opidcontext.SaveChanges();
+            }
+        }
+
+        public static bool IsNewMistakenlyResolved(Check check)
+        {
+            if (mistakenlyResolved.Contains(check.Num))
+            {
+                return false;
+            }
+            else
+            {
+                mistakenlyResolved.Add(check.Num);
+                return check.Disposition.Equals("Mistakenly Resolved");
+            }
+        }
+
+       
     }
 }
