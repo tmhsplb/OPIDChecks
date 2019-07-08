@@ -54,7 +54,9 @@ namespace OPIDChecks.Utils
         {
             DataSet dataSet = GetExcelDataAsDataSet(isFirstRowAsColumnNames);
 
-            DataTable workSheet = dataSet.Tables[workSheetName];
+            // We are always interested in the first worksheet in the workbook.
+            // This eliminates dependence on the particular worksheet name.
+            DataTable workSheet = dataSet.Tables[0]; // was [workSheetName];
 
             if (workSheet == null)
             {

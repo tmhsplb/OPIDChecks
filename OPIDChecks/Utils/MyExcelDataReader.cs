@@ -81,8 +81,6 @@ namespace OPIDChecks.Utils
             string dvalue;
             DateTime rdate = (DateTime)row["Date"];
 
-            //  if (DBNull.Value.Equals(row["Date of Check"]))  //if (DBNull.Value.Equals(row["Date"]))
-
             if (DBNull.Value.Equals(row["Date"]))  // For File1 and File2 read on Mach 30, 2018 
             {
                 // This is a blank row. Provide a dummy value.
@@ -90,7 +88,6 @@ namespace OPIDChecks.Utils
             }
             else
             {
-                //   dvalue = row["Date of Check"].ToString();  //dvalue = row["Date"].ToString();
                 dvalue = row["Date"].ToString();  // For File1 and File2 read on March 30, 2018
             }
 
@@ -112,16 +109,14 @@ namespace OPIDChecks.Utils
         {
             string cvalue;
 
-            //if (DBNull.Value.Equals(row["Check Number"]))  // if (DBNull.Value.Equals(row["Num"]))
-            if (DBNull.Value.Equals(row["Num"]))  // For File1 and FIle2 read on March 30, 2018
+            if (DBNull.Value.Equals(row["Num"]))  // For File1 and File2 read on March 30, 2018
             {
                 // This is a blank row. Provide a dummy value.
                 cvalue = "0";
             }
             else
             {
-                // cvalue = row["Check Number"].ToString();  // cvalue = row["Num"].ToString();
-                cvalue = row["Num"].ToString();  // For FIle1 and File2 read on March 30, 2018
+                cvalue = row["Num"].ToString();  // For File1 and File2 read on March 30, 2018
                 if (cvalue.Equals("EFT") || cvalue.Equals("Debit"))  // PLB 10/12/2017. Bill's file may have EFT or Debit in Num field. Treat as blank line.
                 {
                     cvalue = "0";
@@ -142,62 +137,12 @@ namespace OPIDChecks.Utils
             return cnum;
         }
 
-        /*
-        public static List<Check> GetVoidedChecks(string filePath)
-        {
-            List<Check> rowChecks = new ExcelData(filePath).GetData().Select(dataRow =>
-                new Check
-                {
-                    Date = GetDateValue(dataRow),  // PLB 10/12/2017 Used when clicking on Inspect tab.
-                    Num = GetCheckNum(dataRow),
-                    Memo = "Voided check" //GetMemo(dataRow),
-                }).ToList();
-
-            List<Check> voidedChecks = new List<Check>();
-
-            // Remove checks corresponding to blank rows in Excel file.
-            foreach (Check check in rowChecks)
-            {
-                if (check.Num != 0)  // if (!check.Memo.Equals("NoCheck"))
-                {
-                    voidedChecks.Add(check);
-                }
-            }
-
-            return voidedChecks;
-        }
-
-        public static List<Check> GetClearedChecks(string filePath)
-        {
-            List<Check> rowChecks = new ExcelData(filePath).GetData().Select(dataRow =>
-                new Check
-                {
-                    Date = GetDateValue(dataRow),  // PLB 10/12/2017 Used when clicking on Inspect tab.
-                    Num = GetCheckNum(dataRow),
-                    Memo = "Cleared check" //GetMemo(dataRow),
-                }).ToList();
-
-            List<Check> clearedChecks = new List<Check>();
-
-            // Remove checks corresponding to blank rows in Excel file.
-            foreach (Check check in rowChecks)
-            {
-                if (check.Num != 0)  // if (!check.Memo.Equals("NoCheck"))
-                {
-                    clearedChecks.Add(check);
-                }
-            }
-
-            return clearedChecks;
-        }
-        */
-
         public static List<Check> GetExcelChecks(string filePath)
         {
             List<Check> rowChecks = new ExcelData(filePath).GetData().Select(dataRow =>
                 new Check
                 {
-                    Date = GetDateValue(dataRow),  // PLB 10/12/2017 Used when clicking on Inspect tab.
+                    Date = GetDateValue(dataRow),
                     Num = GetCheckNum(dataRow),
                 }).ToList();
 
@@ -206,7 +151,7 @@ namespace OPIDChecks.Utils
             // Remove checks corresponding to blank rows in Excel file.
             foreach (Check check in rowChecks)
             {
-                if (check.Num != 0)  // if (!check.Memo.Equals("NoCheck"))
+                if (check.Num != 0)
                 {
                     excelChecks.Add(check);
                 }
