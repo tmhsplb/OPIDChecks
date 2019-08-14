@@ -62,6 +62,7 @@ namespace OPIDChecks.Controllers
                 CheckViewModel cvm = new CheckViewModel();
                 cvm.Num = resolvedCheck.Num;
                 cvm.Disposition = resolvedCheck.Disposition;
+                cvm.Service = resolvedCheck.Service;
                  
                 PopulateImportRow(cvm, importRow);
             }
