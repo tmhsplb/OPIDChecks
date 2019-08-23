@@ -15,6 +15,8 @@ using System.Net.Http.Headers;
 using System.Text;
 using OPIDChecks.DataContexts;
 using DataTables.Mvc;
+using OPIDChecks.Utils;
+using System.Threading;
 
 namespace OPIDChecks.Controllers
 {
@@ -34,7 +36,6 @@ namespace OPIDChecks.Controllers
                 IQueryable<RCheck> query = opidcontext.RChecks;
                 var totalCount = query.Count();
 
-                 
                 // Apply filters for searching
                 if (requestModel.Search.Value != string.Empty)
                 {
@@ -79,6 +80,30 @@ namespace OPIDChecks.Controllers
             return View("ResearchTable");
         }
 
+        /*
+        // Used for testing modal progress bar measuring the progress of restoring a research table.
+        // Based on code found at:
+        //  https://www.codeproject.com/articles/1124691/signalr-progress-bar-simple-example-sending-live-d
+        [HttpPost]
+        public ActionResult Restore(FileViewModel model)
+        {
+            //THIS COULD BE SOME LIST OF DATA
+            int itemsCount = 100;
+
+            for (int i = 0; i <= itemsCount; i++)
+            {
+                //SIMULATING SOME TASK
+                Thread.Sleep(500);
+
+                //CALLING A FUNCTION THAT CALCULATES PERCENTAGE AND SENDS THE DATA TO THE CLIENT
+                ProgressHub.SendProgress("Process in progress...", i, itemsCount);
+            }
+
+            return View("ResearchTable", model);
+        }
+        */
+
+        
         [HttpPost]
         public ActionResult Restore(FileViewModel model)
         {
@@ -101,6 +126,7 @@ namespace OPIDChecks.Controllers
                 List<string> docfiles = FileUploader.UploadFile(postedFile);
                  
                 DataManager.RestoreResearchTable(postedFile.FileName);
+               
                 return View("ResearchTable", model);
             }
 
