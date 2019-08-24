@@ -13,6 +13,7 @@ using System.Linq.Dynamic;
 using System.Text;
 using System.Web.Mvc;
 using DataTables.Mvc;
+using System.Threading;
 
 namespace OPIDChecks.DAL
 {
@@ -358,12 +359,14 @@ namespace OPIDChecks.DAL
             using (OpidDB opidcontext = new OpidDB())
             {
                 var checks = opidcontext.RChecks;
-               
+
+                int checkCount = rChecks.Count;
+                int i = 0;
+
                 if (checks.Count() == 0) // Is the table empty for rebuild?
                 {
                     foreach (CheckViewModel rc in rChecks)
                     {
-                        
                         checks.Add(new RCheck
                         {
                             RecordID = rc.RecordID,
@@ -373,11 +376,14 @@ namespace OPIDChecks.DAL
                             Num = rc.Num,
                             sNum = rc.sNum,
                             Name = rc.Name,
-                            Date = Convert.ToDateTime(rc.Date), 
+                            Date = Convert.ToDateTime(rc.Date),
                             sDate = Convert.ToDateTime(rc.Date).ToString("MM/dd/yyyy"),
                             Service = rc.Service,
                             Disposition = rc.Disposition
                         });
+
+                        i += 1;
+                        ProgressHub.SendProgress("Restore in progress...", i, checkCount);
                     }
 
                     opidcontext.SaveChanges();
