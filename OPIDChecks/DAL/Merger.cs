@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading;
 using System.Web;
 
 namespace OPIDChecks.DAL
@@ -18,7 +19,6 @@ namespace OPIDChecks.DAL
 
                 case "VoidedChecks":
                     UpdateResearchTableFromExcelChecksFile(uploadedFile, "Voided");
-
                     break;
 
                 case "ClearedChecks":
@@ -58,6 +58,9 @@ namespace OPIDChecks.DAL
 
         private static void DetermineResolvedChecks(List<Check> checks, string disposition, List<Check> researchChecks)
         {
+            int i = 0;
+            int checkCount = checks.Count;
+
             foreach (Check check in checks)
             {
                 List<Check> matchedChecks = researchChecks.FindAll(c => c.Num == check.Num || c.Num == -check.Num);
@@ -87,8 +90,15 @@ namespace OPIDChecks.DAL
                             // DataManager.RecoverLostChecks(check, researchChecks);
                         }
                         */
-                    }
+                    } 
                 }
+
+                // Slow down the merging a little bit so we can see the progress bar
+                Thread.Sleep(100);
+
+                i += 1;
+                ProgressHub.SendProgress("Merge in progress...", i, checkCount);
+
                 /*
                 else // PLB 1/11/2019
                 {

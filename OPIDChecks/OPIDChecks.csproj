@@ -706,6 +706,7 @@
     <Content Include="Views\Merge\Merge.cshtml" />
     <Content Include="Views\Admin\Resolved.cshtml" />
     <Content Include="Views\Superadmin\MistakenlyResolved.cshtml" />
+    <Content Include="Views\Shared\_ModalProgressBar.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Views\FileDownload\" />

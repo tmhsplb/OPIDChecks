@@ -18,6 +18,51 @@
     </div>
 </div>
 
+<br /><br /><br />
+
+
+
+<form id="backupForm">
+    <h4>Backup Research Table</h4>
+    <hr />
+    <div class="form-group">
+        <div class="col-md-offset-2 col-md-10">
+            <button class="btn btn-default" type="submit">Download Research Table Backup File</button>
+        </div>
+    </div>
+</form>
+
+<br /><br /><br/>
+
+<script type="text/javascript">
+    /* https://stackoverflow.com/questions/11534690/how-to-do-a-jquery-callback-after-form-submit */
+    /* https://www.airpair.com/js/jquery-ajax-post-tutorial */
+    $("#backupForm").submit(function () {
+        alert("Backup form");
+        $.ajax({
+            url: "@Url.Action("GetResearchTable", "FileDownload")",
+            dataType: 'json',
+            type: "POST",
+            contentType: 'application/x-www-form-urlencoded',
+            data: $(this).serialize(),
+            success: function (data, textStatus, jQxhr) {
+                alert("Inside backupForm callback: data.rtFileName = " + data.rtFileName);
+                var textFileAsBlob = new Blob([data.content], { type: 'text/plain' });
+
+                var downloadLink = document.createElement("a");
+                downloadLink.download = data.rtFileName + ".csv";
+
+                downloadLink.innerHtml = "Download Research Table";
+                downloadLink.href = window.webkitURL.createObjectURL(textFileAsBlob);
+                downloadLink.click();
+            },
+            error: function (jqXhr, textStatus, errorThrown) {
+                alert("error thrown: " + errorThrown);
+            }
+        })
+    })
+</script>
+
 @section Scripts
 {
     <script type="text/javascript">
