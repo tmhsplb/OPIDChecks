@@ -8,7 +8,7 @@ namespace OPIDChecks.DAL
 {
     public class ProgressHub : Hub
     {
-        // Loosely based on:
+        // Based on:
         //  https://www.codeproject.com/articles/1124691/signalr-progress-bar-simple-example-sending-live-d
         public static void SendProgress(string progressMessage, int progressCount, int totalItems)
         {
