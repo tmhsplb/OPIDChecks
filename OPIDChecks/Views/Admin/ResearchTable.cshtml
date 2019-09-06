@@ -31,6 +31,10 @@
         </div>
     </div>
 </form>
+<br/><br/>
+<div class="text-danger">
+The download button might not work the first time. Keep trying and be patient.
+</div>
 
 <br /><br /><br/>
 
@@ -38,7 +42,7 @@
     /* https://stackoverflow.com/questions/11534690/how-to-do-a-jquery-callback-after-form-submit */
     /* https://www.airpair.com/js/jquery-ajax-post-tutorial */
     $("#backupForm").submit(function () {
-        alert("Backup form");
+        // alert("Backup form");
         $.ajax({
             url: "@Url.Action("GetResearchTable", "FileDownload")",
             dataType: 'json',
@@ -46,7 +50,7 @@
             contentType: 'application/x-www-form-urlencoded',
             data: $(this).serialize(),
             success: function (data, textStatus, jQxhr) {
-                alert("Inside backupForm callback: data.rtFileName = " + data.rtFileName);
+                // alert("Inside backupForm callback: data.rtFileName = " + data.rtFileName);
                 var textFileAsBlob = new Blob([data.content], { type: 'text/plain' });
 
                 var downloadLink = document.createElement("a");
