@@ -39,11 +39,11 @@
 
         // Reference the auto-generated proxy for the hub.
         var progress = $.connection.progressHub;
-        /* alert(progress); */
+        // alert(progress); 
 
         // Create a function that the hub can call back to display messages.
         progress.client.addProgress = function (message, percentage) {
-            //at this point server side had send message and percentage back to the client
+            //at this point server side has sent message and percentage back to the client
             //and then we handle progress bar any way we want it
 
             //Using a function in Helper.js file we show modal and display text and percentage

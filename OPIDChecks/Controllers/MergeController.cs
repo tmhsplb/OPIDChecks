@@ -15,7 +15,7 @@ namespace OPIDChecks.Controllers
         public ActionResult Merge()
         {
             TempData["UploadedFile"] = "";
-            ViewData["MergeStatus"] = "Wait for the Merge Complete message after clicking the Merge button";
+           // ViewData["MergeStatus"] = "Wait for the Merge Complete message after clicking the Merge button";
             return View();
         }
 

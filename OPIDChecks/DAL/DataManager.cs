@@ -196,13 +196,13 @@ namespace OPIDChecks.DAL
                 {
                     NewResearchCheck(row, "SD", row.SDCheckDisposition);
                 }
+                
+                // Slow down adding of checks to the Research Table a little bit so we can see the progress bar
+                Thread.Sleep(100);
+
+                i += 1;
+                ProgressHub.SendProgress("Adding checks to Research Table...", i, checkCount);
             }
-
-            // Slow down adding of checks to the Research Table a little bit so we can see the progress bar
-            Thread.Sleep(100);
-
-            i += 1;
-            ProgressHub.SendProgress("Adding checks to Research Table...", i, checkCount);
 
             return newResearchChecks;
         }
@@ -408,7 +408,6 @@ namespace OPIDChecks.DAL
             return resRows;
         }
  
-
         public static List<Check> GetExcelChecks(string uploadedFileName, string disposition)
         {
             if (uploadedFileName.Equals("unknown"))
