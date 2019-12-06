@@ -53,6 +53,16 @@ namespace OPIDChecks.Controllers
             }, "text/html");
         }
 
+        public JsonResult DownloadResearchTable()
+        {
+            string researchTableFileName = FileDownloader.DownloadResearchTable();
+             
+            return Json(new
+            {
+                rtFileName = researchTableFileName
+            }, "text/html");
+        }
+
         private static void PrepopulateImportRow(List<Check> researchChecks, ImportRow importRow)
         {
             List<Check> rChecks = researchChecks.FindAll(r => r.RecordID == importRow.RecordID && r.InterviewRecordID == importRow.InterviewRecordID).ToList();

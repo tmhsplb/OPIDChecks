@@ -20,11 +20,13 @@ namespace OPIDChecks.DAL
            
             if (checks != null)
             {
-                string timestamp = Extras.GetTimestamp();
-                string fname = string.Format("Research {0}", timestamp);
+              //  string timestamp = Extras.GetTimestamp();
+              //  string fname = string.Format("Research {0}", timestamp);
+
+                string fname = Extras.GetResearchTableName();
                 string pathToResearchTableFile = System.Web.HttpContext.Current.Request.MapPath(string.Format("~/Downloads/{0}.csv", fname));
 
-                PrepareResearchTableDownload(pathToResearchTableFile, checks);
+                WriteResearchTable(pathToResearchTableFile, checks);
                 return fname;
             }
 
@@ -46,11 +48,9 @@ namespace OPIDChecks.DAL
             System.IO.MemoryStream stream = new MemoryStream(bytes);
             string content = Encoding.ASCII.GetString(stream.ToArray());
             return content;
-        }
+        }       
 
-        
-
-        public static void PrepareResearchTableDownload(string pathToResearchTableFile, List<CheckViewModel> checks)
+        public static void WriteResearchTable(string pathToResearchTableFile, List<CheckViewModel> checks)
         {
             var csv = new StringBuilder();
           

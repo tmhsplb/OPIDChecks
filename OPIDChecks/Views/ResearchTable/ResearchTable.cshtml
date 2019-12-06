@@ -56,10 +56,9 @@
 }
 
 
-
 <br /><br /><br />
 
-
+@* Downloading through the browser stopped working when the Research Table became large. Now just dump the RT to the ~/Downloads/ folder.
 <form id="backupForm">
     <h4>Backup Research Table</h4>
     <hr />
@@ -73,7 +72,20 @@
 <div class="text-danger">
     The download button might not work the first time. Keep trying and be patient.
 </div>
+*@
 
+<form id="downloadForm">
+    <h4>Backup Research Table</h4>
+    <hr />
+    <div class="form-group">
+        <div class="col-md-offset-2 col-md-10">
+            <button class="btn btn-default" type="submit">Create Research Table Backup File in ~/Downloads/ folder</button>
+        </div>
+    </div>
+</form>
+<br /><br />
+
+@*
 <script type="text/javascript">
     /* https://stackoverflow.com/questions/11534690/how-to-do-a-jquery-callback-after-form-submit */
     /* https://www.airpair.com/js/jquery-ajax-post-tutorial */
@@ -94,6 +106,29 @@
                 downloadLink.innerHtml = "Download Research Table";
                 downloadLink.href = window.webkitURL.createObjectURL(textFileAsBlob);
                 downloadLink.click();
+            },
+            error: function (jqXhr, textStatus, errorThrown) {
+                alert("error thrown: " + errorThrown);
+            }
+        })
+    })
+</script>
+*@
+
+<script type="text/javascript">
+    /* https://stackoverflow.com/questions/11534690/how-to-do-a-jquery-callback-after-form-submit */
+    /* https://www.airpair.com/js/jquery-ajax-post-tutorial */
+    $("#downloadForm").submit(function () {
+        $.ajax({
+            url: "@Url.Action("DownloadResearchTable", "FileDownload")",
+            dataType: 'json',
+            type: "POST",
+            contentType: 'application/x-www-form-urlencoded',
+            data: $(this).serialize(),
+            success: function (data, textStatus, jQxhr) {
+                // alert("Inside backupForm callback: data.rtFileName = " + data.rtFileName);
+               
+                alert("Downloaded " + data.rtFileName + " to ~/Downloads/ folder");
             },
             error: function (jqXhr, textStatus, errorThrown) {
                 alert("error thrown: " + errorThrown);
