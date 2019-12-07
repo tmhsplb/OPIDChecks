@@ -34,6 +34,15 @@ namespace OPIDChecks.Controllers
             using (OpidDB opidcontext = new OpidDB())
             {
                 IQueryable<RCheck> query = opidcontext.RChecks;
+
+                /* Used when searching for bottleneck.
+                IQueryable<RCheck> query = opidcontext.RChecks.Where(c => c.Name.StartsWith("A") || c.Name.StartsWith("B") || c.Name.StartsWith("C") || c.Name.StartsWith("D")
+                  || c.Name.StartsWith("E") || c.Name.StartsWith("F") || c.Name.StartsWith("G") || c.Name.StartsWith("H") || c.Name.StartsWith("I") || c.Name.StartsWith("J")
+                  || c.Name.StartsWith("K") || c.Name.StartsWith("L") || c.Name.StartsWith("M") || c.Name.StartsWith("N") || c.Name.StartsWith("O") || c.Name.StartsWith("P")
+                  || c.Name.StartsWith("Q") || c.Name.StartsWith("R") || c.Name.StartsWith("S") || c.Name.StartsWith("T") || c.Name.StartsWith("U") || c.Name.StartsWith("V")
+                  || c.Name.StartsWith("W") || c.Name.StartsWith("X") || c.Name.StartsWith("Y") || c.Name.StartsWith("Z"));
+                */
+
                 var totalCount = query.Count();
 
                 // Apply filters for searching
@@ -52,12 +61,12 @@ namespace OPIDChecks.Controllers
 
                 var filteredCount = query.Count();
 
-                query = query.OrderBy("Name asc");
+                var fqo = query.OrderBy("Id asc");  // Order by the primary key for speed. Oredering by Name times out, because Name is not an indexed field.
 
                 // Paging
-                query = query.Skip(requestModel.Start).Take(requestModel.Length);
+                var fqop = fqo.Skip(requestModel.Start).Take(requestModel.Length);
                 
-                var data = query.Select(rcheck => new
+                var data = fqop.Select(rcheck => new
                 {
                     sRecordID = rcheck.sRecordID,
                     sInterviewRecordID = rcheck.sInterviewRecordID,
