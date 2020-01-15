@@ -91,7 +91,7 @@ namespace OPIDChecks.Controllers
                     importRow.LBVDCheck2Disposition = resolvedCheck.Disposition;
                     break;
                 case "LBVD3":
-                    importRow.LBVDCheckNum2 = resolvedCheck.Num;
+                    importRow.LBVDCheckNum3 = resolvedCheck.Num;  // PLB 1/15/2020: was LBVDCheckNum2
                     importRow.LBVDCheck3Disposition = resolvedCheck.Disposition;
                     break;
 
@@ -130,7 +130,7 @@ namespace OPIDChecks.Controllers
                     importRow.MBVDCheck2Disposition = resolvedCheck.Disposition;
                     break;
                 case "MBVD3":
-                    importRow.MBVDCheckNum2 = resolvedCheck.Num;
+                    importRow.MBVDCheckNum3 = resolvedCheck.Num;  // PLB 1/15/2020: was MBVDCheckNum2
                     importRow.MBVDCheck3Disposition = resolvedCheck.Disposition;
                     break;
 
