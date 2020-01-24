@@ -53,14 +53,28 @@ namespace OPIDChecks.Controllers
             }, "text/html");
         }
 
+        /*
         public JsonResult DownloadResearchTable()
         {
             string researchTableFileName = FileDownloader.DownloadResearchTable();
-             
+                                    
             return Json(new
             {
                 rtFileName = researchTableFileName
-            }, "text/html");
+            }, "text/html"); 
+        }
+        */
+
+        // From: https://www.codeproject.com/Tips/1028915/How-To-Download-a-File-in-MVC-2
+        // First created the file to be downloaded and copy into the ~/Downloads folder.
+        // Then download from the ~/Downloads folder to the PC's Downloads folder.
+        public ActionResult DownloadResearchTable()
+        {
+            string researchTableFileName = FileDownloader.DownloadResearchTable();
+            string filenameAndExtension = string.Format("{0}.csv", researchTableFileName);
+            string path = AppDomain.CurrentDomain.BaseDirectory + "Downloads/";
+            byte[] fileBytes = System.IO.File.ReadAllBytes(path + filenameAndExtension);
+            return File(fileBytes, System.Net.Mime.MediaTypeNames.Application.Octet, filenameAndExtension);
         }
 
         private static void PrepopulateImportRow(List<Check> researchChecks, ImportRow importRow)
